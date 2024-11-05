@@ -1,0 +1,144 @@
+<project name="deploy-ejb-kidoro" default="deploy" basedir="./build-file">
+    <property environment="env"/>
+
+    <property name="deploy.dir" value="C:\wildfly-10.0.0.Final/standalone/deployments"/>
+
+    <property name="kidoro-warname" value="kidoro.war"/>
+    <property name="kidoro-jarname" value="kidoro-ejb.jar"/>
+    <property name="kidoro-earname" value="kidoro.ear"/>
+    <property name="srcejb-dir" value="./kidoro-ejb/src/"/>
+    <property name="srcwar-dir" value="./kidoro-war/src/java"/>
+
+    <property name="build-kidoro-war_war" value="${basedir}/kidoro_war"/>
+    <property name="build-kidoro-ejb_jar" value="${basedir}/kidoro_jar"/>
+    <property name="build-kidoro-lib" value="${basedir}/lib"/>
+
+    <property name="buildEar.dir" value="${basedir}/ear"/>
+    <property name="webcontent.dir" value="../kidoro-war/web"/>
+
+    <property name="srcproperties.dir" value="../kidoro-ejb/src/java/resources"/>
+
+
+    <path id="classpath">
+        <fileset dir="${basedir}\lib">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+
+    <target name="clean">
+        <echo>
+            ---- Compilation kidoro ----------------
+        </echo>
+        <echo>JDK ${ant.java.version} ${ant.version}</echo>
+        <echo>clean</echo>
+
+        <delete file="${build-kidoro-ejb_jar}"/>
+        <delete file="${build-kidoro-war_war}"/>
+        <delete file="${build-kidoro-lib}"/>
+        <delete file="${basedir}/${kidoro-earname}"/>
+        <delete file="${buildEar.dir}/${kidoro-earname}"/>
+
+        <echo>clean done</echo>
+    </target>
+
+    <tstamp>
+        <format property="dateDuJour" pattern="dd/MM/yyyy hh:mm aa"/>
+    </tstamp>
+
+    <target name="init" depends="clean">
+        <echo>initialisation ${dateDuJour}</echo>
+
+        <mkdir dir="${build-kidoro-war_war}"/>
+        <mkdir dir="${build-kidoro-war_war}/WEB-INF"/>
+        <mkdir dir="${build-kidoro-war_war}/WEB-INF/lib"/>
+        <mkdir dir="${build-kidoro-war_war}/WEB-INF/classes"/>
+        <mkdir dir="${build-kidoro-war_war}/META-INF"/>
+        <mkdir dir="${build-kidoro-war_war}/WEB-INF/classes/META-INF"/>
+
+        <mkdir dir="${build-kidoro-ejb_jar}"/>
+
+
+        <echo file="${webcontent.dir}/dateBuild.txt" append="false" message="${dateDuJour}"/>
+
+        <copy todir="${build-kidoro-war_war}/">
+            <fileset dir="${webcontent.dir}" excludes="META-INF/**"/>
+        </copy>
+        <copy todir="${build-kidoro-war_war}/META-INF">
+            <fileset dir="${webcontent.dir}/WEB-INF/META-INF"/>
+        </copy>
+        <copy todir="${build-kidoro-war_war}/WEB-INF/lib/">
+            <fileset dir="${basedir}\lib"/>
+        </copy>
+
+<!--        <copy file="../kidoro-ejb/src/java/project.properties" tofile="${build-kidoro-ejb_jar}/project.properties"/>-->
+<!--        <copy file="../kidoro-ejb/src/java/resources/text.properties"-->
+<!--              tofile="${build-kidoro-ejb_jar}/java/resources/text.properties"/>-->
+<!--        <copy file="../kidoro-ejb/src/java/resources/text_zh.properties"-->
+<!--              tofile="${build-kidoro-ejb_jar}/java/resources/text_zh.properties"/>-->
+
+        <copy file="../kidoro-ejb/src/java/apj.properties" tofile="${build-kidoro-ejb_jar}/apj.properties"/>
+
+        <echo>initialisation done</echo>
+        <copy todir="${build-kidoro-war_war}/WEB-INF">
+            <fileset dir="./../kidoro-war/web/WEB-INF" includes="**/*.xml"/>
+        </copy>
+    </target>
+
+    <target name="compile" depends="init">
+        <echo>compilation</echo>
+        <javac srcdir="../kidoro-ejb/src/java" destdir="${build-kidoro-ejb_jar}" nowarn="true" debug="on"
+               deprecation="off" classpathref="classpath" includeantruntime="false" encoding="iso-8859-1">
+        </javac>
+        <echo>compilation done</echo>
+    </target>
+
+    <target name="buildEjbJar" depends="compile">
+        <echo>Build EJB JAR</echo>
+        <jar basedir="${build-kidoro-ejb_jar}" destfile="${buildEar.dir}/${kidoro-jarname}"/>
+        <copy file="${buildEar.dir}/${kidoro-jarname}" todir="${build-kidoro-war_war}/WEB-INF/lib/">
+        </copy>
+        <echo>End Build EJB JAR</echo>
+    </target>
+
+    <target name="compileWar" depends="buildEjbJar">
+        <echo>compilation</echo>
+        <javac srcdir="../kidoro-war/src/java" destdir="${build-kidoro-war_war}/WEB-INF/classes/" nowarn="true"
+               debug="on" deprecation="off" classpathref="classpath" includeantruntime="false" encoding="iso-8859-1">
+            <classpath>
+                <pathelement location="${buildEar.dir}/${kidoro-jarname}"/>
+            </classpath>
+        </javac>
+        <echo>compilation done</echo>
+    </target>
+
+
+<!--    <target name="copieProperties" depends="compileWar">-->
+<!--        <echo>Copie des properties</echo>-->
+<!--        <copy file="${srcproperties.dir}/text.properties" todir="${build-kidoro-war_war}/WEB-INF/classes">-->
+<!--        </copy>-->
+<!--        <copy file="${srcproperties.dir}/text_zh.properties" todir="${build-kidoro-war_war}/WEB-INF/classes">-->
+<!--        </copy>-->
+<!--        <echo>Fin de la copie</echo>-->
+<!--    </target>-->
+
+
+    <target name="deploy" depends="compileWar">
+        <echo>${env.JBOSS_HOME}</echo>
+
+        <copy todir="${deploy.dir}/kidoro.war">
+            <fileset dir="${build-kidoro-war_war}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+
+        <touch file="${deploy.dir}/kidoro.war.dodeploy"/>
+        <echo>deployement exploded war done</echo>
+        <echo>
+            Compilation kidoro [DONE]----------------
+        </echo>
+
+    </target>
+
+
+</project>
