@@ -20,10 +20,9 @@ namespace KidoroApp.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> CreateBlock(double L, double l, double h, string daty, double prixRevient)
+        public Task<IActionResult> CreateBlock(double longueur, double largeur, double h, string daty, double prixRevient)
         {
-            // Forme forme = new Forme(L, l, h);
-            FormBlock block = new FormBlock(L, L, h, daty, prixRevient);
+            FormBlock block = new FormBlock(longueur, largeur, h, daty, prixRevient);
 
             string endPoint = "blocs";
             _ = SendToServlet(block, endPoint);
