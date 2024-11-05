@@ -137,13 +137,13 @@ END;
 -- Tables
 CREATE TABLE bloc
 (
-    id            VARCHAR2(50),
-    daty_entree   DATE          NOT NULL,
-    daty_sortie   DATE,
-    prix_revient  NUMBER(15, 2) NOT NULL,
-    longueur      NUMBER(15, 2) NOT NULL,
-    largeur       NUMBER(15, 2) NOT NULL,
-    hauteur       NUMBER(15, 2) NOT NULL,
+    id           VARCHAR2(50),
+    daty_entree  DATE          NOT NULL,
+    daty_sortie  DATE,
+    prix_revient NUMBER(15, 2) NOT NULL,
+    longueur     NUMBER(15, 2) NOT NULL,
+    largeur      NUMBER(15, 2) NOT NULL,
+    hauteur      NUMBER(15, 2) NOT NULL,
     id_bloc_mere VARCHAR2(50),
     PRIMARY KEY (id),
     FOREIGN KEY (id_bloc_mere) REFERENCES bloc (id)
@@ -151,7 +151,8 @@ CREATE TABLE bloc
 
 CREATE TABLE transformation
 (
-    id             VARCHAR2(50),
+    id            VARCHAR2(50),
+    daty          DATE         NOT NULL,
     id_bloc_reste VARCHAR2(50),
     id_bloc_mere  VARCHAR2(50) NOT NULL,
     PRIMARY KEY (id),
