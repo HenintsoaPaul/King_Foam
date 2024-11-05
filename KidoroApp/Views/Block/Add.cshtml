@@ -10,17 +10,17 @@
             <div class="col-6">
                 <div class="form-group">
                     <label for="Longueur">Longueur</label>
-                    <input required value="1.0" type="number" class="form-control" id="Longueur" name="L" />
+                    <input required value="1.0" type="text" class="form-control decimal" id="Longueur" name="longueur" />
                 </div>
 
                 <div class="form-group">
                     <label for="largeur">Largeur</label>
-                    <input required value="1.0" type="number" class="form-control" id="largeur" name="l" />
+                    <input required value="1.0" type="text" class="form-control decimal" id="largeur" name="largeur" />
                 </div>
 
                 <div class="form-group">
                     <label for="hauteur">Hauteur</label>
-                    <input required value="1.0" type="number" class="form-control" id="hauteur" name="h" />
+                    <input required value="1.0" type="text" class="form-control decimal" id="hauteur" name="h" />
                 </div>
             </div>
 
@@ -32,7 +32,8 @@
 
                 <div class="form-group">
                     <label for="PrixRevient">Prix Revient</label>
-                    <input required value="200" type="number" class="form-control" id="PrixRevient" name="PrixRevient" />
+                    <input required value="200" type="text" class="form-control decimal" id="PrixRevient"
+                        name="PrixRevient" />
                 </div>
             </div>
         </div>
@@ -40,3 +41,35 @@
         <button type="submit" class="btn btn-success btn-block">Valider Block</button>
     </form>
 </section>
+
+<script>
+
+    document.addEventListener( 'DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll( '.decimal' );
+
+        inputs.forEach( input => {
+            let timeoutId;
+
+            input.addEventListener( 'input', function ( e ) {
+                clearTimeout( timeoutId );
+
+                // Délais de 2 secondes avant d'exécuter la fonction de validation
+                timeoutId = setTimeout( () => {
+                    validateInput( e.target );
+                }, 2000 );
+            } );
+        } );
+
+        function validateInput( inputElement ) {
+            let value = inputElement.value;
+
+            // Vérifie si la valeur est déjà valide
+            if ( !isNaN( parseFloat( value ) ) && isFinite( value ) ) {
+                inputElement.value = parseFloat( value ).toFixed( 2 );
+            } else {
+                inputElement.value = '';
+            }
+        }
+    } );
+
+</script>
