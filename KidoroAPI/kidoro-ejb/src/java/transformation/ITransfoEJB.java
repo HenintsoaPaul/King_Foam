@@ -1,4 +1,10 @@
 package transformation;
 
-public class TransfoEJB {
+import javax.ejb.Remote;
+
+@Remote
+public interface ITransfoEJB {
+
+    int add(Transformation transformation)
+            throws Exception;
 }
