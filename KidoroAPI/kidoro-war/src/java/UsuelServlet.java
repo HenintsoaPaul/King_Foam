@@ -15,11 +15,19 @@ public class UsuelServlet extends HeninServlet {
         try {
             resp.setContentType( "application/json" );
             super.setCORS( resp );
-            Object[] arr = EJBGetter.getUsuelEJB().getAll();
-            resp.getWriter().println( this.gson.toJson( arr ) );
+
+            Object[] arr = null;
+            String action = req.getParameter( "action" );
+            if ( action == null ) {
+                arr = EJBGetter.getUsuelEJB().getAll();
+            } else if ( action.equalsIgnoreCase( "lib" ) ) {
+                arr = EJBGetter.getUsuelEJB().getAllLib( true );
+            }
+
+            resp.getWriter().println( gson.toJson( arr ) );
         } catch ( Exception e ) {
             resp.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-            resp.getWriter().write( this.gson.toJson( new JsonError( "Erreur interne" ) ) );
+            resp.getWriter().write( gson.toJson( new JsonError( "Erreur interne" ) ) );
         }
     }
 }

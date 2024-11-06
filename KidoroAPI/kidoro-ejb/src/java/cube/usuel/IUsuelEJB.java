@@ -10,4 +10,10 @@ public interface IUsuelEJB {
 
     Usuel getByVal( String id )
             throws Exception;
+
+    UsuelLib[] getAllLib( boolean desc )
+            throws Exception;
+
+    UsuelLib getMaxRapport()
+            throws Exception;
 }
