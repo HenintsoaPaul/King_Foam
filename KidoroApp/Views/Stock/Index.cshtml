@@ -1,10 +1,12 @@
-﻿@model IEnumerable<StockUsuel>;
+﻿@model KidoroApp.Models.viewModels.StockViewModel;
 
 @{
     ViewData["Title"] = "Etat-Stock";
 }
 
-<section>
+<section id="usuel">
+    <h3>Forme Usuelles en stock</h3>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -16,13 +18,40 @@
         </thead>
 
         <tbody>
-            @foreach (var stockUsuel in Model)
+            @foreach (var stockUsuel in Model.Usuels)
             {
                 <tr>
                     <td>@stockUsuel.idForme</td>
                     <td>@stockUsuel.quantite</td>
                     <td>@stockUsuel.sumPrixVente</td>
                     <td>@stockUsuel.sumPrixRevient</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+<section id="bloc">
+    <h3>Blocs en stock</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>IdBloc</th>
+                <th>Prix Revient</th>
+                <th>Prix Vente (Optimiste)</th>
+                <th>Prix Revient (Volume Min)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var stockBloc in Model.Blocs)
+            {
+                <tr>
+                    <td>@stockBloc.idBloc</td>
+                    <td>@stockBloc.prixRevient</td>
+                    <td>@stockBloc.prixVenteOptimiste</td>
+                    <td>@stockBloc.prixVenteVolMin</td>
                 </tr>
             }
         </tbody>

@@ -1,4 +1,4 @@
-namespace KidoroApp.Models;
+namespace KidoroApp.Models.stock;
 
 public class StockUsuel
 {

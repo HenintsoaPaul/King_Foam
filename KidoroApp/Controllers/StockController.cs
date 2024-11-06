@@ -9,7 +9,6 @@ public class StockController(HttpClient httpClient) : Controller
 
     public IActionResult Index()
     {
-        var data = _stockService.GetStockUsuel();
-        return View(data);
+        return View(_stockService.GetStock());
     }
 }
