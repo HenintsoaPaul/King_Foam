@@ -18,7 +18,7 @@ namespace KidoroApp.Controllers
 
         public async Task<IActionResult> Add()
         {
-            List<Bloc> listBloc = await _kidoroService.GetAllBloc();
+            List<Bloc> listBloc = await _kidoroService.GetAllBlocInStock();
             List<Usuel> listUsuel = await _kidoroService.GetAllUsuel();
             var data = new Transfo(listBloc, listUsuel);
             return View(data);

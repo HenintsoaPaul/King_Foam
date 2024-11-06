@@ -23,4 +23,13 @@ public class KidoroService(HttpClient httpClient)
         var result = await response.Content.ReadFromJsonAsync<List<Bloc>>();
         return result ?? [];
     }
+
+    public async Task<List<Bloc>> GetAllBlocInStock()
+    {
+        const string requestUri = BaseUrl + "/blocs?action=stock";
+        var response = await httpClient.GetAsync(requestUri);
+        if (!response.IsSuccessStatusCode) return [];
+        var result = await response.Content.ReadFromJsonAsync<List<Bloc>>();
+        return result ?? [];
+    }
 }
