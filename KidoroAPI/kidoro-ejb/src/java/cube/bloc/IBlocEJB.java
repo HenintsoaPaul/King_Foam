@@ -10,4 +10,10 @@ public interface IBlocEJB {
 
     Bloc[] getAll()
             throws Exception;
+
+    Bloc[] getAllInStock()
+            throws Exception;
+
+    Bloc getById( String id )
+            throws Exception;
 }

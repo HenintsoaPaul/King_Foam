@@ -35,4 +35,19 @@ public class BlocEJB implements IBlocEJB {
             throws Exception {
         return ( Bloc[] ) CGenUtil.rechercher( new Bloc(), null, null, "" );
     }
+
+    @Override
+    public Bloc[] getAllInStock()
+            throws Exception {
+        String apresWhere = " and daty_sortie is null";
+        return ( Bloc[] ) CGenUtil.rechercher( new Bloc(), null, null, apresWhere );
+    }
+
+    @Override
+    public Bloc getById(String id)
+            throws Exception {
+        Bloc b = new Bloc();
+        b.setId( id );
+        return ( Bloc ) CGenUtil.rechercher( b, null, null, "" )[0];
+    }
 }

@@ -18,7 +18,15 @@ public class BlocServlet extends HeninServlet {
         try {
             resp.setContentType( "application/json" );
             super.setCORS( resp );
-            Object[] arr = EJBGetter.getBlocEJB().getAll();
+
+            Object[] arr = null;
+            String action = req.getParameter( "action" );
+            if ( action == null ) {
+                arr = EJBGetter.getBlocEJB().getAll();
+            } else if ( action.equalsIgnoreCase( "stock" ) ) {
+                arr = EJBGetter.getBlocEJB().getAllInStock();
+            }
+
             resp.getWriter().println( this.gson.toJson( arr ) );
         } catch ( Exception e ) {
             resp.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
