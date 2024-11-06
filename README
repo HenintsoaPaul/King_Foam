@@ -1,0 +1,17 @@
+# King Foam
+
+## Add block
+
+Formulaire d'insertion d'un bloc d'eponge
+
+## Transformation
+
+Formulaire de transformation d'un bloc d'eponge en produits de magasin
+
+## Stock
+
+Affichage de l'etat de stock
+
+* Produits: qte, sum(Prix vente), sum( moyennePrixRevient )
+
+* Blocks: prix revient, prix vente(optimiste), prix vente(volume min)
