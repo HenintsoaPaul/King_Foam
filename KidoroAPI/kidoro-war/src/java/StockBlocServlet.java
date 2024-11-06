@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet( urlPatterns = "stock/usuel" )
-public class StockUsuelServlet extends HeninServlet {
+@WebServlet( urlPatterns = "stock/bloc" )
+public class StockBlocServlet extends HeninServlet {
 
     @Override
     protected void doGet( HttpServletRequest req, HttpServletResponse resp )
@@ -16,7 +16,13 @@ public class StockUsuelServlet extends HeninServlet {
             resp.setContentType( "application/json" );
             super.setCORS( resp );
 
-            Object[] arr = EJBGetter.getStockEJB().getStockUsuel();
+            Object[] arr = null;
+            String action = req.getParameter( "action" );
+            if ( action.equalsIgnoreCase( "optim" ) ) {
+                arr = EJBGetter.getStockEJB().getStockBlocOptim();
+            } else if ( action.equalsIgnoreCase( "min" ) ) {
+                arr = EJBGetter.getStockEJB().getStockBlocMin();
+            }
 
             resp.getWriter().println( gson.toJson( arr ) );
         } catch ( Exception e ) {

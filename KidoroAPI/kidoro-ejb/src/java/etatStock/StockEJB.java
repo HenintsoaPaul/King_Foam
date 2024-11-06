@@ -12,4 +12,16 @@ public class StockEJB implements IStockEJB {
             throws Exception {
         return ( StockUsuel[] ) CGenUtil.rechercher( new StockUsuel(), null, null, "" );
     }
+
+    @Override
+    public StockBlocOptim[] getStockBlocOptim()
+            throws Exception {
+        return ( StockBlocOptim[] ) CGenUtil.rechercher( new StockBlocOptim(), null, null, "" );
+    }
+
+    @Override
+    public StockBlocMin[] getStockBlocMin()
+            throws Exception {
+        return ( StockBlocMin[] ) CGenUtil.rechercher( new StockBlocMin(), null, null, "" );
+    }
 }

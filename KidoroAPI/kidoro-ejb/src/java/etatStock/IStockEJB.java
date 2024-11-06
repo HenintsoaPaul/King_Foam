@@ -7,4 +7,10 @@ public interface IStockEJB {
 
     StockUsuel[] getStockUsuel()
             throws Exception;
+
+    StockBlocOptim[] getStockBlocOptim()
+            throws Exception;
+
+    StockBlocMin[] getStockBlocMin()
+            throws Exception;
 }
