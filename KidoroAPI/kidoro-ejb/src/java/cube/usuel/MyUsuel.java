@@ -2,8 +2,6 @@ package cube.usuel;
 
 import utils.EJBGetter;
 
-import javax.naming.NamingException;
-
 public class MyUsuel {
 
     String val_usuel;

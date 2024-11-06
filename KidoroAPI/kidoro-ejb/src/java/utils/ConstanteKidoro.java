@@ -1,4 +1,6 @@
 package utils;
 
-public class ConstanteKidoro {
+public abstract class ConstanteKidoro {
+
+    public static String idTypeTransformation = "TYPMVST001";
 }
