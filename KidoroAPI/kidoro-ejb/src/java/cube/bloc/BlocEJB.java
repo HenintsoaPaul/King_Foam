@@ -1,5 +1,6 @@
 package cube.bloc;
 
+import bean.CGenUtil;
 import utilitaire.UtilDB;
 
 import javax.ejb.Stateless;
@@ -27,5 +28,11 @@ public class BlocEJB implements IBlocEJB {
         } finally {
             if ( conn != null ) conn.close();
         }
+    }
+
+    @Override
+    public Bloc[] getAll()
+            throws Exception {
+        return ( Bloc[] ) CGenUtil.rechercher( new Bloc(), null, null, "" );
     }
 }

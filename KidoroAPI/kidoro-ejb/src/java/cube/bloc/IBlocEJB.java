@@ -7,4 +7,7 @@ public interface IBlocEJB {
 
     int add( Bloc bloc )
             throws Exception;
+
+    Bloc[] getAll()
+            throws Exception;
 }
