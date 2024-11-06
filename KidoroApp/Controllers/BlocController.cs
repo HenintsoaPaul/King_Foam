@@ -1,12 +1,13 @@
 using KidoroApp.Models;
 using KidoroApp.Models.formModels;
+using KidoroApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace KidoroApp.Controllers
 {
-    public class BlockController : Controller
+    public class BlocController : Controller
     {
 
         public IActionResult Index()
@@ -20,12 +21,12 @@ namespace KidoroApp.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> CreateBlock(double longueur, double largeur, double h, string daty, double prixRevient)
+        public Task<IActionResult> CreateBloc(double longueur, double largeur, double h, string daty, double prixRevient)
         {
             FormBlock block = new FormBlock(longueur, largeur, h, daty, prixRevient);
 
             string endPoint = "blocs";
-            _ = SendToServlet(block, endPoint);
+            _ = ServletService.Send(block, endPoint);
 
             var view = View("Index", block);
             return Task.FromResult<IActionResult>(view);
