@@ -12,4 +12,12 @@ public class UsuelEJB implements IUsuelEJB {
             throws Exception {
         return ( Usuel[] ) CGenUtil.rechercher( new Usuel(), null, null, "" );
     }
+
+    @Override
+    public Usuel getByVal( String val )
+            throws Exception {
+        Usuel u = new Usuel();
+        u.setVal( val );
+        return ( Usuel ) CGenUtil.rechercher( u, null, null, "" )[0];
+    }
 }

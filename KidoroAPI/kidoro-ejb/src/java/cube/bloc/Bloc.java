@@ -1,6 +1,5 @@
 package cube.bloc;
 
-import bean.ClassMAPTable;
 import cube.Cube;
 
 import java.io.Serializable;
@@ -67,6 +66,11 @@ public class Bloc extends Cube implements Serializable {
 
     public void setId_bloc_mere( String id_bloc_mere ) {
         this.id_bloc_mere = id_bloc_mere;
+    }
+
+    // Advanced Getters
+    public double getPrixRevientVolumique() {
+        return this.getPrix_revient() / this.getVolume();
     }
 
     // Overrides
