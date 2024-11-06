@@ -1,7 +1,7 @@
 -- Séquences
 CREATE SEQUENCE seq_bloc nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_transformation nomaxvalue increment by 1 start with 1;
-CREATE SEQUENCE seq_forme nomaxvalue increment by 1 start with 1;
+CREATE SEQUENCE seq_usuel nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_teta nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_type_mvt_stock nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_mvt_stock nomaxvalue increment by 1 start with 1;
@@ -44,20 +44,20 @@ BEGIN
     RETURN retour;
 END;
 
--- --forme
-CREATE OR REPLACE FUNCTION seq_forme_format(p_num NUMBER) RETURN VARCHAR2 IS
+-- --usuel
+CREATE OR REPLACE FUNCTION seq_usuel_format(p_num NUMBER) RETURN VARCHAR2 IS
     v_result VARCHAR2(255);
 BEGIN
     v_result := 'FORME' || LPAD(TO_CHAR(p_num), 4, '0');
     RETURN v_result;
 END;
 
-CREATE FUNCTION get_seq_forme
+CREATE FUNCTION get_seq_usuel
     RETURN NUMBER
     IS
     retour NUMBER;
 BEGIN
-    SELECT seq_forme.NEXTVAL INTO retour FROM DUAL;
+    SELECT seq_usuel.NEXTVAL INTO retour FROM DUAL;
 
     RETURN retour;
 END;
@@ -160,7 +160,7 @@ CREATE TABLE transformation
     FOREIGN KEY (id_bloc_mere) REFERENCES bloc (id)
 );
 
-CREATE TABLE forme
+CREATE TABLE usuel
 (
     id         VARCHAR2(50),
     val        VARCHAR2(50)  NOT NULL,
@@ -208,9 +208,9 @@ CREATE TABLE mvt_stock_detail
     entree       NUMBER(10),
     sortie       NUMBER(10),
     prix_revient NUMBER(15, 2) NOT NULL,
-    id_forme     VARCHAR2(50)  NOT NULL,
+    id_usuel     VARCHAR2(50)  NOT NULL,
     id_mvt_stock VARCHAR2(50)  NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_forme) REFERENCES forme (id),
+    FOREIGN KEY (id_usuel) REFERENCES usuel (id),
     FOREIGN KEY (id_mvt_stock) REFERENCES mvt_stock (id)
 );

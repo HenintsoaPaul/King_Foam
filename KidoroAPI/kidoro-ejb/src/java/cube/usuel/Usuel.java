@@ -1,17 +1,17 @@
-package cube.forme;
+package cube.usuel;
 
 import cube.Cube;
 
 import java.sql.Connection;
 
-public class Forme extends Cube {
+public class Usuel extends Cube {
 
     String id, val;
     double prix_vente;
 
     // Constr
-    public Forme() {
-        this.setNomTable( "forme" );
+    public Usuel() {
+        this.setNomTable( "usuel" );
     }
 
     // Getters n Setters
@@ -53,7 +53,7 @@ public class Forme extends Cube {
     @Override
     public void construirePK( Connection c )
             throws Exception {
-        this.preparePk( "FORME", "GET_SEQ_FORME" );
+        this.preparePk( "USUEL", "GET_SEQ_USUEL" );
         this.setId( makePK( c ) );
     }
 }
