@@ -1,6 +1,9 @@
 package stock;
 
 import bean.ClassMAPTable;
+import cube.usuel.MyUsuel;
+import cube.usuel.Usuel;
+import utils.EJBGetter;
 
 import java.sql.Connection;
 
@@ -9,11 +12,26 @@ public class MvtStockDetail extends ClassMAPTable {
     String id;
     int entree, sortie;
     double prix_revient;
-    String id_forme, id_mvt_stock;
+    String id_usuel, id_mvt_stock;
 
     // Constr
     public MvtStockDetail() {
         this.setNomTable( "mvt_stock_detail" );
+    }
+
+    public static MvtStockDetail creerFromUsuel( MyUsuel myUsuel, double prixRevientVolumique )
+            throws Exception {
+        Usuel usuel = EJBGetter.getUsuelEJB().getByVal( myUsuel.getVal_usuel() );
+        int qte = myUsuel.getQuantite();
+
+        MvtStockDetail mv = new MvtStockDetail();
+        mv.setEntree( qte );
+        mv.setSortie( 0 );
+
+        mv.setPrix_revient( usuel.getVolume() * qte * prixRevientVolumique );
+        mv.setId_usuel( usuel.getId() );
+
+        return mv;
     }
 
     // Getters n Setters
@@ -50,12 +68,12 @@ public class MvtStockDetail extends ClassMAPTable {
         this.prix_revient = prix_revient;
     }
 
-    public String getId_forme() {
-        return id_forme;
+    public String getId_usuel() {
+        return id_usuel;
     }
 
-    public void setId_forme( String id_forme ) {
-        this.id_forme = id_forme;
+    public void setId_usuel( String id_usuel ) {
+        this.id_usuel = id_usuel;
     }
 
     public String getId_mvt_stock() {

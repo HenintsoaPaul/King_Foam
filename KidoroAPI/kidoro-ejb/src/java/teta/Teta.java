@@ -1,17 +1,17 @@
-package cube.forme;
+package teta;
 
-import cube.Cube;
+import bean.ClassMAPTable;
 
 import java.sql.Connection;
 
-public class Forme extends Cube {
+public class Teta extends ClassMAPTable {
 
-    String id, val;
-    double prix_vente;
+    String id;
+    double val;
 
     // Constr
-    public Forme() {
-        this.setNomTable( "forme" );
+    public Teta() {
+        this.setNomTable( "teta" );
     }
 
     // Getters n Setters
@@ -23,20 +23,12 @@ public class Forme extends Cube {
         this.id = id;
     }
 
-    public String getVal() {
+    public double getVal() {
         return val;
     }
 
-    public void setVal( String val ) {
+    public void setVal( double val ) {
         this.val = val;
-    }
-
-    public double getPrix_vente() {
-        return prix_vente;
-    }
-
-    public void setPrix_vente( double prix_vente ) {
-        this.prix_vente = prix_vente;
     }
 
     // Overrides
@@ -53,7 +45,7 @@ public class Forme extends Cube {
     @Override
     public void construirePK( Connection c )
             throws Exception {
-        this.preparePk( "FORME", "GET_SEQ_FORME" );
+        this.preparePk( "TETA", "GET_SEQ_TETA" );
         this.setId( makePK( c ) );
     }
 }

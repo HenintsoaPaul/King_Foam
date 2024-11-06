@@ -1,11 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Add Block Page";
+    ViewData["Title"] = "Insertion Bloc";
 }
 
 <section class="container mt-5">
     <h1 class="text-center">@ViewData["Title"]</h1>
 
-    <form method="post" asp-controller="Block" asp-action="CreateBlock" class="form">
+    <form method="post" asp-controller="Bloc" asp-action="CreateBloc" class="form">
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-success btn-block">Valider Block</button>
+        <button type="submit" class="btn btn-success btn-block">Valider Bloc</button>
     </form>
 </section>
 

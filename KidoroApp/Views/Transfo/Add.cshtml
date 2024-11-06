@@ -1,0 +1,167 @@
+﻿@model KidoroApp.Models.viewModels.Transfo
+
+@{
+    ViewData["Title"] = "Add Transformation";
+}
+
+<section class="container mt-5">
+    <h1 class="text-center">@ViewData["Title"]</h1>
+
+    <form method="post" asp-controller="Transfo" asp-action="CreateTransfo" class="form">
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <h2>Bloc</h2>
+
+                    <div class="form-group">
+                        <label for="Daty">Daty</label>
+                        <input required type="date" class="form-control" id="Daty" name="Daty" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="BlocSelect">Bloc</label>
+                                <select required id="BlocSelect" name="Bloc" class="form-select">
+                                    @foreach (var bloc in Model.ListBloc)
+                                    {
+                                        <option value="@bloc.id" data-long="@bloc.largeur" 
+                                        data-larg="@bloc.longueur" data-h="@bloc.hauteur">
+                                            @bloc.id
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="vol-bloc">Volume</label>
+                                <input value="0" type="readonly" class="form-control" id="vol-bloc" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h2>Reste</h2>
+
+                    <div class="form-group">
+                        <label for="Longueur">Longueur</label>
+                        <input required value="1.0" type="text" class="form-control decimal" id="Longueur"
+                            name="Longueur" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="largeur">Largeur</label>
+                        <input required value="1.0" type="text" class="form-control decimal" id="largeur"
+                            name="Largeur" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Hauteur">Hauteur</label>
+                        <input required value="1.0" type="text" class="form-control decimal" id="hauteur"
+                            name="Hauteur" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <h2>Usuels</h2>
+
+                <div class="form-group">
+                    <label for="F1">F1</label>
+                    <input required value="0" type="number" class="form-control" id="F1" name="F1" />
+                </div>
+                <div class="form-group">
+                    <label for="F2">F2</label>
+                    <input required value="0" type="number" class="form-control" id="F2" name="F2" />
+                </div>
+                <div class="form-group">
+                    <label for="F3">F3</label>
+                    <input required value="0" type="number" class="form-control" id="F3" name="F3" />
+                </div>
+                <div class="form-group">
+                    <label for="Eponge">Eponge</label>
+                    <input required value="0" type="number" class="form-control" id="Eponge" name="Eponge" />
+                </div>
+
+                <div class="form-group">
+                                <label for="vol-reel">Volume Reel</label>
+                                <input value="0" type="readonly" class="form-control" id="vol-reel" />
+                            </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-Transfo">
+            Valider Transformation
+        </button>
+    </form>
+</section>
+
+<script>
+
+    document.addEventListener( 'DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll( '.decimal' );
+
+        inputs.forEach( input => {
+            let timeoutId;
+
+            input.addEventListener( 'input', function ( e ) {
+                clearTimeout( timeoutId );
+
+                // Délais de 2 secondes avant d'exécuter la fonction de validation
+                timeoutId = setTimeout( () => {
+                    validateInput( e.target );
+                }, 2000 );
+            } );
+        } );
+
+        function validateInput( inputElement ) {
+            let value = inputElement.value;
+
+            // Vérifie si la valeur est déjà valide
+            if ( !isNaN( parseFloat( value ) ) && isFinite( value ) ) {
+                inputElement.value = parseFloat( value ).toFixed( 2 );
+            } else {
+                inputElement.value = '';
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        // -----------------------------------
+        const volumeInput = document.getElementById('vol-bloc');
+        
+        // Fonction pour mettre à jour le volume du bloc
+        function updateBlocVolume() {
+            const selectedBloc = document.getElementById( 'BlocSelect' ).value;
+
+            // Récupération du volume du bloc sélectionné depuis l'attribut data
+            const long = document.querySelector(`#BlocSelect option[value="${selectedBloc}"]`).getAttribute('data-long');
+            const larg = document.querySelector(`#BlocSelect option[value="${selectedBloc}"]`).getAttribute('data-larg');
+            const h = document.querySelector(`#BlocSelect option[value="${selectedBloc}"]`).getAttribute('data-h');
+            const volume = larg * long * h;
+
+            if (volume !== null) {
+                volumeInput.value = parseFloat(volume).toFixed(2);
+            } else {
+                console.warn('Aucun volume trouvé pour le bloc sélectionné');
+            }
+        }
+
+        // Écoute des changements sur le champ de sélection du bloc
+        document.getElementById( 'BlocSelect' ).addEventListener( 'change', updateBlocVolume );
+
+        // Initialiser le volume avec les données existantes
+        updateBlocVolume();
+    } );
+
+</script>

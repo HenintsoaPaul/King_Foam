@@ -13,6 +13,28 @@ import java.io.IOException;
 public class BlocServlet extends HeninServlet {
 
     @Override
+    protected void doGet( HttpServletRequest req, HttpServletResponse resp )
+            throws IOException {
+        try {
+            resp.setContentType( "application/json" );
+            super.setCORS( resp );
+
+            Object[] arr = null;
+            String action = req.getParameter( "action" );
+            if ( action == null ) {
+                arr = EJBGetter.getBlocEJB().getAll();
+            } else if ( action.equalsIgnoreCase( "stock" ) ) {
+                arr = EJBGetter.getBlocEJB().getAllInStock();
+            }
+
+            resp.getWriter().println( this.gson.toJson( arr ) );
+        } catch ( Exception e ) {
+            resp.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+            resp.getWriter().write( this.gson.toJson( new JsonError( "Erreur interne" ) ) );
+        }
+    }
+
+    @Override
     protected void doPost( HttpServletRequest req, HttpServletResponse resp )
             throws IOException {
         try {
