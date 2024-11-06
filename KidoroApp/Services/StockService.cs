@@ -10,8 +10,11 @@ public class StockService(HttpClient httpClient)
 
     public async Task<StockViewModel> GetStock()
     {
-        List<StockUsuel> u = await GetStockUsuel();
-        return new StockViewModel(u, GetStockBloc());
+        return new StockViewModel(
+            await GetStockUsuel(),
+            await GetStockBlocOptim(),
+            await GetStockBlocMin()
+            );
     }
 
     public async Task<List<StockUsuel>> GetStockUsuel()
@@ -20,6 +23,24 @@ public class StockService(HttpClient httpClient)
         var response = await httpClient.GetAsync(requestUri);
         if (!response.IsSuccessStatusCode) return [];
         var result = await response.Content.ReadFromJsonAsync<List<StockUsuel>>();
+        return result ?? [];
+    }
+
+    public async Task<List<StockBloc>> GetStockBlocOptim()
+    {
+        const string requestUri = BaseUrl + "/stock/bloc?action=optim";
+        var response = await httpClient.GetAsync(requestUri);
+        if (!response.IsSuccessStatusCode) return [];
+        var result = await response.Content.ReadFromJsonAsync<List<StockBloc>>();
+        return result ?? [];
+    }
+
+    public async Task<List<StockBloc>> GetStockBlocMin()
+    {
+        const string requestUri = BaseUrl + "/stock/bloc?action=min";
+        var response = await httpClient.GetAsync(requestUri);
+        if (!response.IsSuccessStatusCode) return [];
+        var result = await response.Content.ReadFromJsonAsync<List<StockBloc>>();
         return result ?? [];
     }
 
@@ -47,34 +68,6 @@ public class StockService(HttpClient httpClient)
                     qte_total = 75,
                     p_vente = 300m,
                     p_revient = 250
-                }
-            };
-    }
-
-    public static List<StockBloc> GetStockBloc()
-    {
-        return new List<StockBloc>
-            {
-                new StockBloc
-                {
-                    idBloc = "B001",
-                    prixRevient = 5000,
-                    prixVenteOptimiste = 7500m,
-                    prixVenteVolMin = 6000
-                },
-                new StockBloc
-                {
-                    idBloc = "B002",
-                    prixRevient = 8000,
-                    prixVenteOptimiste = 11000m,
-                    prixVenteVolMin = 9000
-                },
-                new StockBloc
-                {
-                    idBloc = "B003",
-                    prixRevient = 4000,
-                    prixVenteOptimiste = 5500m,
-                    prixVenteVolMin = 4500
                 }
             };
     }

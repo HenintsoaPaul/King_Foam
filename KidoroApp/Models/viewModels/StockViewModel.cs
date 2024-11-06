@@ -2,10 +2,11 @@
 
 namespace KidoroApp.Models.viewModels;
 
-public class StockViewModel(List<StockUsuel> usuels, List<StockBloc> blocs)
+public class StockViewModel(List<StockUsuel> usuels, List<StockBloc> blocsOptim, List<StockBloc> blocsMin)
 {
     public List<StockUsuel> Usuels { get; set; } = usuels;
-    public List<StockBloc> Blocs { get; set; } = blocs;
+    public List<StockBloc> BlocsOptim { get; set; } = blocsOptim;
+    public List<StockBloc> BlocsMin { get; set; } = blocsMin;
 
     // Methods
     // Usuels
@@ -25,16 +26,16 @@ public class StockViewModel(List<StockUsuel> usuels, List<StockBloc> blocs)
     }
 
     // Blocs
-    public decimal GetTotalPrixRevientBloc()
-    {
-        return Blocs.Sum(b => b.prixRevient);
-    }
-    public decimal GetTotalPrixVenteOptimisteBloc()
-    {
-        return Blocs.Sum(b => b.prixVenteOptimiste);
-    }
-    public decimal GetTotalPrixVenteVolMinBloc()
-    {
-        return Blocs.Sum(b => b.prixVenteVolMin);
-    }
+    //public decimal GetTotalPrixRevientBloc()
+    //{
+    //    return Blocs.Sum(b => b.prixRevient);
+    //}
+    //public decimal GetTotalPrixVenteOptimisteBloc()
+    //{
+    //    return Blocs.Sum(b => b.prixVenteOptimiste);
+    //}
+    //public decimal GetTotalPrixVenteVolMinBloc()
+    //{
+    //    return Blocs.Sum(b => b.prixVenteVolMin);
+    //}
 }

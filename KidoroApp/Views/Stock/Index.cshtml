@@ -40,38 +40,78 @@
     </table>
 </section>
 
-<section id="bloc">
-    <h3>Blocs en stock</h3>
+<section id="bloc optim">
+    <h3>Blocs en stock (Optimiste)</h3>
 
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>IdBloc</th>
+                <th>IdUsuel</th>
+                <th>Qte estime</th>
+                <th>Prix Vente</th>
                 <th>Prix Revient</th>
-                <th>Prix Vente (Optimiste)</th>
-                <th>Prix Vente (Volume Min)</th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach (var stockBloc in Model.Blocs)
+            @foreach (var stockBloc in Model.BlocsOptim)
             {
                 <tr>
-                    <td>@stockBloc.idBloc</td>
-                    <td>@stockBloc.prixRevient</td>
-                    <td>@stockBloc.prixVenteOptimiste</td>
-                    <td>@stockBloc.prixVenteVolMin</td>
+                    <td>@stockBloc.id_bloc</td>
+                    <td>@stockBloc.id_usuel</td>
+                    <td>@stockBloc.qte_produit</td>
+                    <td>@stockBloc.pv_bloc</td>
+                    <td>@stockBloc.pr_bloc</td>
                 </tr>
             }
         </tbody>
 
-        <tfoot>
+@*         <tfoot>
             <tr>
                 <th>TOTAL</th>
                 <th>@Model.GetTotalPrixRevientBloc()</th>
                 <th>@Model.GetTotalPrixVenteOptimisteBloc()</th>
                 <th>@Model.GetTotalPrixVenteVolMinBloc()</th>
             </tr>
-        </tfoot>
+        </tfoot> *@
+    </table>
+</section>
+
+<section id="bloc min">
+    <h3>Blocs en stock (Volume Min)</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>IdBloc</th>
+                <th>IdUsuel</th>
+                <th>Qte estime</th>
+                <th>Prix Vente</th>
+                <th>Prix Revient</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var stockBloc in Model.BlocsMin)
+            {
+                <tr>
+                    <td>@stockBloc.id_bloc</td>
+                    <td>@stockBloc.id_usuel</td>
+                    <td>@stockBloc.qte_produit</td>
+                    <td>@stockBloc.pv_bloc</td>
+                    <td>@stockBloc.pr_bloc</td>
+                </tr>
+            }
+        </tbody>
+
+        @*         <tfoot>
+        <tr>
+        <th>TOTAL</th>
+        <th>@Model.GetTotalPrixRevientBloc()</th>
+        <th>@Model.GetTotalPrixVenteOptimisteBloc()</th>
+        <th>@Model.GetTotalPrixVenteVolMinBloc()</th>
+        </tr>
+        </tfoot> *@
     </table>
 </section>
