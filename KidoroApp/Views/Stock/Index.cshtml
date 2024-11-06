@@ -1,0 +1,117 @@
+﻿@model KidoroApp.Models.viewModels.StockViewModel;
+
+@{
+    ViewData["Title"] = "Etat-Stock";
+}
+
+<section id="usuel">
+    <h3>Forme Usuelles en stock</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Forme</th>
+                <th>Quantite</th>
+                <th>Sum Prix Vente</th>
+                <th>Sum Prix Revient</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var stockUsuel in Model.Usuels)
+            {
+                <tr>
+                    <td>@stockUsuel.id_usuel</td>
+                    <td>@stockUsuel.qte_total</td>
+                    <td>@stockUsuel.p_vente</td>
+                    <td>@stockUsuel.p_revient</td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <th>TOTAL</th>
+                <th>@Model.GetTotalQuantiteUsuels()</th>
+                <th>@Model.GetTotalPrixVenteUsuels()</th>
+                <th>@Model.GetTotalPrixVenteUsuels()</th>
+            </tr>
+        </tfoot>
+    </table>
+</section>
+
+<section id="bloc optim">
+    <h3>Blocs en stock (Optimiste)</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>IdBloc</th>
+                <th>IdUsuel</th>
+                <th>Qte estime</th>
+                <th>Prix Vente</th>
+                <th>Prix Revient</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var stockBloc in Model.BlocsOptim)
+            {
+                <tr>
+                    <td>@stockBloc.id_bloc</td>
+                    <td>@stockBloc.id_usuel</td>
+                    <td>@stockBloc.qte_produit</td>
+                    <td>@stockBloc.pv_bloc</td>
+                    <td>@stockBloc.pr_bloc</td>
+                </tr>
+            }
+        </tbody>
+
+@*         <tfoot>
+            <tr>
+                <th>TOTAL</th>
+                <th>@Model.GetTotalPrixRevientBloc()</th>
+                <th>@Model.GetTotalPrixVenteOptimisteBloc()</th>
+                <th>@Model.GetTotalPrixVenteVolMinBloc()</th>
+            </tr>
+        </tfoot> *@
+    </table>
+</section>
+
+<section id="bloc min">
+    <h3>Blocs en stock (Volume Min)</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>IdBloc</th>
+                <th>IdUsuel</th>
+                <th>Qte estime</th>
+                <th>Prix Vente</th>
+                <th>Prix Revient</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var stockBloc in Model.BlocsMin)
+            {
+                <tr>
+                    <td>@stockBloc.id_bloc</td>
+                    <td>@stockBloc.id_usuel</td>
+                    <td>@stockBloc.qte_produit</td>
+                    <td>@stockBloc.pv_bloc</td>
+                    <td>@stockBloc.pr_bloc</td>
+                </tr>
+            }
+        </tbody>
+
+        @*         <tfoot>
+        <tr>
+        <th>TOTAL</th>
+        <th>@Model.GetTotalPrixRevientBloc()</th>
+        <th>@Model.GetTotalPrixVenteOptimisteBloc()</th>
+        <th>@Model.GetTotalPrixVenteVolMinBloc()</th>
+        </tr>
+        </tfoot> *@
+    </table>
+</section>

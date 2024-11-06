@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet( "usuels" )
-public class UsuelServlet extends HeninServlet {
+@WebServlet( urlPatterns = "stock/bloc" )
+public class StockBlocServlet extends HeninServlet {
 
     @Override
     protected void doGet( HttpServletRequest req, HttpServletResponse resp )
@@ -18,10 +18,10 @@ public class UsuelServlet extends HeninServlet {
 
             Object[] arr = null;
             String action = req.getParameter( "action" );
-            if ( action == null ) {
-                arr = EJBGetter.getUsuelEJB().getAll();
-            } else if ( action.equalsIgnoreCase( "lib" ) ) {
-                arr = EJBGetter.getUsuelEJB().getAllLib( true );
+            if ( action.equalsIgnoreCase( "optim" ) ) {
+                arr = EJBGetter.getStockEJB().getStockBlocOptim();
+            } else if ( action.equalsIgnoreCase( "min" ) ) {
+                arr = EJBGetter.getStockEJB().getStockBlocMin();
             }
 
             resp.getWriter().println( gson.toJson( arr ) );

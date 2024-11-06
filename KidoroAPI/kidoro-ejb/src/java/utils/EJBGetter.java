@@ -2,6 +2,7 @@ package utils;
 
 import cube.bloc.IBlocEJB;
 import cube.usuel.IUsuelEJB;
+import etatStock.IStockEJB;
 import teta.ITetaEJB;
 import transformation.ITransfoEJB;
 
@@ -37,5 +38,12 @@ public abstract class EJBGetter {
         Context ctx = new InitialContext();
         String jndi = "java:global/kidoro/TransfoEJB!transformation.ITransfoEJB";
         return ( ITransfoEJB ) ctx.lookup( jndi );
+    }
+
+    public static IStockEJB getStockEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/StockEJB!etatStock.IStockEJB";
+        return ( IStockEJB ) ctx.lookup( jndi );
     }
 }

@@ -25,8 +25,7 @@
                                 <select required id="BlocSelect" name="Bloc" class="form-select">
                                     @foreach (var bloc in Model.ListBloc)
                                     {
-                                        <option value="@bloc.id" data-long="@bloc.largeur" 
-                                        data-larg="@bloc.longueur" data-h="@bloc.hauteur">
+                                        <option value="@bloc.id" data-volume="@bloc.GetVolume()">
                                             @bloc.id
                                         </option>
                                     }
@@ -145,10 +144,7 @@
             const selectedBloc = document.getElementById( 'BlocSelect' ).value;
 
             // Récupération du volume du bloc sélectionné depuis l'attribut data
-            const long = document.querySelector(`#BlocSelect option[value="${selectedBloc}"]`).getAttribute('data-long');
-            const larg = document.querySelector(`#BlocSelect option[value="${selectedBloc}"]`).getAttribute('data-larg');
-            const h = document.querySelector(`#BlocSelect option[value="${selectedBloc}"]`).getAttribute('data-h');
-            const volume = larg * long * h;
+            const volume = document.querySelector(`#BlocSelect option[value="${selectedBloc}"]`).getAttribute('data-volume');
 
             if (volume !== null) {
                 volumeInput.value = parseFloat(volume).toFixed(2);

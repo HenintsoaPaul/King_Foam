@@ -1,6 +1,6 @@
 ﻿namespace KidoroApp.Models.formModels
 {
-    public class FormBlock
+    public class FormBloc
     {
         public double L { get; set; }
         public double l { get; set; }
@@ -8,7 +8,7 @@
         public string daty { get; set; }
         public double prixRevient { get; set; }
 
-        public FormBlock(double L, double l, double h, string strDaty, double prixRevient)
+        public FormBloc(double L, double l, double h, string strDaty, double prixRevient)
         {
             this.L = L;
             this.l = l;
