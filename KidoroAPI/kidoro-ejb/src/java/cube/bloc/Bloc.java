@@ -1,10 +1,13 @@
 package cube.bloc;
 
 import cube.Cube;
+import transformation.MyTransfo;
+import utils.DateUtil;
 
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
+import java.text.ParseException;
 
 public class Bloc extends Cube implements Serializable {
 
@@ -17,6 +20,20 @@ public class Bloc extends Cube implements Serializable {
     // Constr
     public Bloc() {
         this.setNomTable( "bloc" );
+    }
+
+    public static Bloc creerBlocFilleFromMyTransfo( MyTransfo myTransfo, double prixRevientVolumique )
+            throws ParseException {
+        Bloc bFille = new Bloc();
+        bFille.setDaty_entree( DateUtil.strToDate( myTransfo.getDaty() ) );
+        bFille.setId_bloc_mere( myTransfo.getId_bloc() );
+
+        bFille.setLongueur( myTransfo.getLongueur() );
+        bFille.setLargeur( myTransfo.getLargeur() );
+        bFille.setHauteur( myTransfo.getHauteur() );
+
+        bFille.setPrix_revientFromPrv( prixRevientVolumique );
+        return bFille;
     }
 
     // Controle
@@ -58,6 +75,15 @@ public class Bloc extends Cube implements Serializable {
     public void setPrix_revient( double prix_revient ) {
         if ( prix_revient <= 0 ) throw new IllegalArgumentException( "prixRevient must be > 0" );
         this.prix_revient = prix_revient;
+    }
+
+    /**
+     * Set prixRevient a partir de prixRevientVolumique
+     * @param prixRevientVolumique
+     */
+    public void setPrix_revientFromPrv( double prixRevientVolumique ) {
+        if ( prixRevientVolumique <= 0 ) throw new IllegalArgumentException( "prixRevientVolumique must be > 0" );
+        this.prix_revient = this.getVolume() * prixRevientVolumique;
     }
 
     public String getId_bloc_mere() {
