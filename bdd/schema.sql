@@ -140,10 +140,10 @@ CREATE TABLE bloc
     id           VARCHAR2(50),
     daty_entree  DATE          NOT NULL,
     daty_sortie  DATE,
-    prix_revient NUMBER(15, 2) NOT NULL,
-    longueur     NUMBER(15, 2) NOT NULL,
-    largeur      NUMBER(15, 2) NOT NULL,
-    hauteur      NUMBER(15, 2) NOT NULL,
+    prix_revient NUMBER(15, 5) NOT NULL,
+    longueur     NUMBER(15, 5) NOT NULL,
+    largeur      NUMBER(15, 5) NOT NULL,
+    hauteur      NUMBER(15, 5) NOT NULL,
     id_bloc_mere VARCHAR2(50),
     PRIMARY KEY (id),
     FOREIGN KEY (id_bloc_mere) REFERENCES bloc (id)
@@ -164,10 +164,10 @@ CREATE TABLE usuel
 (
     id         VARCHAR2(50),
     val        VARCHAR2(50)  NOT NULL,
-    prix_vente NUMBER(15, 2),
-    longueur   NUMBER(15, 2) NOT NULL,
-    largeur    NUMBER(15, 2) NOT NULL,
-    hauteur    NUMBER(15, 2) NOT NULL,
+    prix_vente NUMBER(15, 5),
+    longueur   NUMBER(15, 5) NOT NULL,
+    largeur    NUMBER(15, 5) NOT NULL,
+    hauteur    NUMBER(15, 5) NOT NULL,
     PRIMARY KEY (id),
     UNIQUE (val)
 );
@@ -175,7 +175,7 @@ CREATE TABLE usuel
 CREATE TABLE teta
 (
     id  VARCHAR2(50),
-    val NUMBER(15, 2) NOT NULL,
+    val NUMBER(15, 5) NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -193,7 +193,7 @@ CREATE TABLE mvt_stock
     id                     VARCHAR2(50),
     designation            VARCHAR2(50),
     daty                   DATE          NOT NULL,
-    prix_revient_volumique NUMBER(15, 2) NOT NULL,
+    prix_revient_volumique NUMBER(15, 5) NOT NULL,
     id_origine             VARCHAR2(50),
     id_type_mvt_stock      VARCHAR2(50)  NOT NULL,
     PRIMARY KEY (id),
@@ -207,10 +207,30 @@ CREATE TABLE mvt_stock_detail
     id           VARCHAR2(50),
     entree       NUMBER(10),
     sortie       NUMBER(10),
-    prix_revient NUMBER(15, 2) NOT NULL,
+    prix_revient NUMBER(15, 5) NOT NULL,
     id_usuel     VARCHAR2(50)  NOT NULL,
     id_mvt_stock VARCHAR2(50)  NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_usuel) REFERENCES usuel (id),
     FOREIGN KEY (id_mvt_stock) REFERENCES mvt_stock (id)
 );
+
+-- Views
+CREATE OR REPLACE VIEW usuel_lib AS
+SELECT USUEL.*,
+       LONGUEUR * LARGEUR * HAUTEUR as volume,
+       PRIX_VENTE / (LONGUEUR * LARGEUR * HAUTEUR) as rapport
+FROM usuel;
+
+CREATE OR REPLACE VIEW v_stock_usuel AS
+select t.*,
+       u.PRIX_VENTE as pu_vente,
+       u.PRIX_VENTE * t.qte_total as p_vente,
+       avg_pu_revient * t.qte_total as p_revient
+from USUEL u
+         join (select ID_USUEL,
+                      sum(ENTREE) as qte_total,
+                      avg(PRIX_REVIENT / ENTREE) as avg_pu_revient
+               from mvt_stock_detail
+               group by ID_USUEL) t
+              on u.ID = t.ID_USUEL;
