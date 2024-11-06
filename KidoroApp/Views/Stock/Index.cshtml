@@ -1,0 +1,30 @@
+﻿@model IEnumerable<StockUsuel>;
+
+@{
+    ViewData["Title"] = "Etat-Stock";
+}
+
+<section>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Forme</th>
+                <th>Quantite</th>
+                <th>Sum Prix Vente</th>
+                <th>Sum Prix Revient</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var stockUsuel in Model)
+            {
+                <tr>
+                    <td>@stockUsuel.idForme</td>
+                    <td>@stockUsuel.quantite</td>
+                    <td>@stockUsuel.sumPrixVente</td>
+                    <td>@stockUsuel.sumPrixRevient</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
