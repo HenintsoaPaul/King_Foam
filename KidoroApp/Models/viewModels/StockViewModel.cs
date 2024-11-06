@@ -11,17 +11,17 @@ public class StockViewModel(List<StockUsuel> usuels, List<StockBloc> blocs)
     // Usuels
     public int GetTotalQuantiteUsuels()
     {
-        return Usuels.Sum(u => u.quantite);
+        return Usuels.Sum(u => u.qte_total);
     }
 
     public decimal GetTotalPrixVenteUsuels()
     {
-        return Usuels.Sum(u => u.sumPrixVente);
+        return Usuels.Sum(u => u.p_vente);
     }
 
     public decimal GetTotalPrixRevientUsuels()
     {
-        return Usuels.Sum(u => u.sumPrixRevient);
+        return Usuels.Sum(u => u.p_revient);
     }
 
     // Blocs
