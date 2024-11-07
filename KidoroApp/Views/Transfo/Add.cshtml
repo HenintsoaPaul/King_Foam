@@ -8,9 +8,11 @@
     <h1 class="text-center">@ViewData["Title"]</h1>
 
     <form method="post" asp-controller="Transfo" asp-action="CreateTransfo" class="form">
-        <div class="row">
-            <div class="col-6">
-                <div class="row">
+
+        <div class="card-body">
+            @* Bloc *@
+            <div class="card">
+                <div class="row card-body">
                     <h2>Bloc</h2>
 
                     <div class="form-group">
@@ -34,62 +36,91 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label for="vol-bloc">Volume</label>
+                                <label for="vol-bloc">Volume(readonly)</label>
                                 <input value="0" type="readonly" class="form-control" id="vol-bloc" />
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
+            <br>
+
+            @* Reste *@
+            <div class="card">
+                <div class="card-body">
                     <h2>Reste</h2>
 
-                    <div class="form-group">
-                        <label for="Longueur">Longueur</label>
-                        <input required value="1.0" type="text" class="form-control decimal" id="Longueur"
-                            name="Longueur" />
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label for="Longueur">Longueur</label>
+                            <input required value="1.0" type="text" class="form-control decimal" id="Longueur"
+                                name="Longueur" />
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label for="largeur">Largeur</label>
+                            <input required value="1.0" type="text" class="form-control decimal" id="largeur"
+                                name="Largeur" />
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label for="Hauteur">Hauteur</label>
+                            <input required value="1.0" type="text" class="form-control decimal" id="hauteur"
+                                name="Hauteur" />
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="largeur">Largeur</label>
-                        <input required value="1.0" type="text" class="form-control decimal" id="largeur"
-                            name="Largeur" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Hauteur">Hauteur</label>
-                        <input required value="1.0" type="text" class="form-control decimal" id="hauteur"
-                            name="Hauteur" />
+                        <label for="vol-reste">Volume Reste(readonly)</label>
+                        <input value="0" type="readonly" class="form-control" id="vol-reste" />
                     </div>
                 </div>
             </div>
 
-            <div class="col-6">
-                <h2>Usuels</h2>
+            <br>
 
-                <div class="form-group">
-                    <label for="F1">F1</label>
-                    <input required value="0" type="number" class="form-control" id="F1" name="F1" />
-                </div>
-                <div class="form-group">
-                    <label for="F2">F2</label>
-                    <input required value="0" type="number" class="form-control" id="F2" name="F2" />
-                </div>
-                <div class="form-group">
-                    <label for="F3">F3</label>
-                    <input required value="0" type="number" class="form-control" id="F3" name="F3" />
-                </div>
-                <div class="form-group">
-                    <label for="Eponge">Eponge</label>
-                    <input required value="0" type="number" class="form-control" id="Eponge" name="Eponge" />
-                </div>
+            @* Usuels *@
+            <div class="card">
+                <div class="row card-body">
+                    <h2>Usuels</h2>
 
-                <div class="form-group">
-                                <label for="vol-reel">Volume Reel</label>
-                                <input value="0" type="readonly" class="form-control" id="vol-reel" />
-                            </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="F1">F1</label>
+                            <input required value="0" type="number" class="form-control" id="F1" name="F1" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="F2">F2</label>
+                            <input required value="0" type="number" class="form-control" id="F2" name="F2" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="F3">F3</label>
+                            <input required value="0" type="number" class="form-control" id="F3" name="F3" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="Eponge">Eponge</label>
+                            <input required value="0" type="number" class="form-control" id="Eponge" name="Eponge" />
+                        </div>
+                    </div>
+
+                    @* <div class="form-group">
+                    <label for="vol-reel">Volume Reel</label>
+                    <input value="0" type="readonly" class="form-control" id="vol-reel" />
+                    </div> *@
+                </div>
             </div>
         </div>
+
 
         <button type="submit" class="btn btn-success btn-Transfo">
             Valider Transformation
@@ -100,6 +131,42 @@
 <script>
 
     document.addEventListener( 'DOMContentLoaded', function () {
+
+        // --------------- Up volume reste -----------------
+        const volumeResteInput = document.getElementById( 'vol-reste' );
+
+        const LongueurInp = document.getElementById( 'Longueur' );
+        const largeurInp = document.getElementById( 'largeur' );
+        const hauteurInp = document.getElementById( 'hauteur' );
+
+        function updateVolumeReste() {
+            const volReste = LongueurInp.value * largeurInp.value * hauteurInp.value;
+            console.log( `VolReste: ${volReste}` );
+
+            volumeResteInput.value = parseFloat( volReste ).toFixed( 4 );
+        }
+
+        // Écoute des changements sur le champ de sélection du bloc
+        LongueurInp.addEventListener( 'input', updateVolumeReste );
+        largeurInp.addEventListener( 'input', updateVolumeReste );
+        hauteurInp.addEventListener( 'input', updateVolumeReste );
+
+        // Initialiser le volume avec les data par defaut
+        updateVolumeReste();
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ------------- decimal inputs ---------------
         const inputs = document.querySelectorAll( '.decimal' );
 
         inputs.forEach( input => {
@@ -135,21 +202,20 @@
 
 
 
-
         // -----------------------------------
-        const volumeInput = document.getElementById('vol-bloc');
-        
+        const volumeBlocInput = document.getElementById( 'vol-bloc' );
+
         // Fonction pour mettre à jour le volume du bloc
         function updateBlocVolume() {
             const selectedBloc = document.getElementById( 'BlocSelect' ).value;
 
             // Récupération du volume du bloc sélectionné depuis l'attribut data
-            const volume = document.querySelector(`#BlocSelect option[value="${selectedBloc}"]`).getAttribute('data-volume');
+            const volume = document.querySelector( `#BlocSelect option[value="${selectedBloc}"]` ).getAttribute( 'data-volume' );
 
-            if (volume !== null) {
-                volumeInput.value = parseFloat(volume).toFixed(2);
+            if ( volume !== null ) {
+                volumeBlocInput.value = parseFloat( volume ).toFixed( 4 );
             } else {
-                console.warn('Aucun volume trouvé pour le bloc sélectionné');
+                console.warn( 'Aucun volume trouvé pour le bloc sélectionné' );
             }
         }
 
