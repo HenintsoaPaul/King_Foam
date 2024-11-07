@@ -82,41 +82,31 @@
 
             @* Usuels *@
             <div class="card">
-                <div class="row card-body">
+                <div class="card-body">
                     <h2>Usuels</h2>
 
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <label for="F1">F1</label>
-                            <input required value="0" type="number" class="form-control" id="F1" name="F1" />
-                        </div>
-                    </div>
+                    @foreach (var usuel in Model.ListUsuel)
+                    {
+                        <div class="row">
+                            <div class="form-group col-7">
+                                <label for="@usuel.val">@usuel.val</label>
+                                <input required value="0" type="number" class="form-control usuel-inp" id="@usuel.val"
+                                    name="@usuel.val" data-val="@usuel.val" data-volume="@usuel.GetVolume()" />
+                            </div>
 
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <label for="F2">F2</label>
-                            <input required value="0" type="number" class="form-control" id="F2" name="F2" />
-                        </div>
-                    </div>
+                            <div class="col-1"></div>
 
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <label for="F3">F3</label>
-                            <input required value="0" type="number" class="form-control" id="F3" name="F3" />
+                            <div class="form-group col-4">
+                                <label for="vol-usuel-@usuel.val">Volume(readonly)</label>
+                                <input value="0" type="readonly" class="form-control usuel-vol" id="vol-usuel-@usuel.val" />
+                            </div>
                         </div>
-                    </div>
+                    }
 
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <label for="Eponge">Eponge</label>
-                            <input required value="0" type="number" class="form-control" id="Eponge" name="Eponge" />
-                        </div>
+                    <div class="form-group">
+                        <label for="vol-usuel-total">Volume Total des Usuels(readonly)</label>
+                        <input value="0" type="readonly" class="form-control" id="vol-usuel-total" />
                     </div>
-
-                    @* <div class="form-group">
-                    <label for="vol-reel">Volume Reel</label>
-                    <input value="0" type="readonly" class="form-control" id="vol-reel" />
-                    </div> *@
                 </div>
             </div>
         </div>
@@ -131,6 +121,46 @@
 <script>
 
     document.addEventListener( 'DOMContentLoaded', function () {
+
+        // --------------- Up Volume Usuel -----------------
+        function UpdateTotalVolumeUsuel() {
+            let sum = 0;
+
+            document.querySelectorAll( '.usuel-vol' ).forEach( inpVolume => {
+                let v = inpVolume.value;
+                sum += parseFloat( v );
+            } );
+
+            let inpVolTotal = document.getElementById( 'vol-usuel-total' );
+            inpVolTotal.value = sum;
+        }
+
+        UpdateTotalVolumeUsuel();
+
+        function UpdateOneVolumeUsuel( inp, event ) {
+            let qte = inp.value;
+            let inpVol = document.getElementById( `vol-usuel-${inp.dataset.val}` );
+            inpVol.value = inp.dataset.volume * qte;
+
+            console.log( `val: ${inp.dataset.val}` );
+            console.log( `volume : ${inpVol.value} | qte: ${qte}` );
+
+            UpdateTotalVolumeUsuel();
+        }
+
+        document.querySelectorAll( '.usuel-inp' ).forEach( inp => {
+            inp.addEventListener( 'input', ( e ) => UpdateOneVolumeUsuel( inp, e ) )
+        } );
+
+
+
+
+
+
+
+
+
+
 
         // --------------- Up volume reste -----------------
         const volumeResteInput = document.getElementById( 'vol-reste' );
@@ -187,7 +217,13 @@
 
             // Vérifie si la valeur est déjà valide
             if ( !isNaN( parseFloat( value ) ) && isFinite( value ) ) {
-                inputElement.value = parseFloat( value ).toFixed( 2 );
+                let val = parseFloat( value ).toFixed( 2 );
+
+                if ( val > 0 ) {
+                    inputElement.value = val;
+                } else {
+                    inputElement.value = '';
+                }
             } else {
                 inputElement.value = '';
             }
