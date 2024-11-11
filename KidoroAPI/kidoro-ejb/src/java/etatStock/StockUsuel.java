@@ -6,8 +6,7 @@ public class StockUsuel extends ClassMAPTable {
 
     String id_usuel;
     int qte_total;
-    double avg_pu_revient, pu_vente;
-    double p_revient, p_vente;
+    double prix_vente_total, prix_revient_total, prix_revient_avg;
 
     // Constr
     public StockUsuel() {
@@ -31,36 +30,28 @@ public class StockUsuel extends ClassMAPTable {
         this.qte_total = qte_total;
     }
 
-    public double getAvg_pu_revient() {
-        return avg_pu_revient;
+    public double getPrix_vente_total() {
+        return prix_vente_total;
     }
 
-    public void setAvg_pu_revient( double avg_pu_revient ) {
-        this.avg_pu_revient = avg_pu_revient;
+    public void setPrix_vente_total( double prix_vente_total ) {
+        this.prix_vente_total = prix_vente_total;
     }
 
-    public double getPu_vente() {
-        return pu_vente;
+    public double getPrix_revient_total() {
+        return prix_revient_total;
     }
 
-    public void setPu_vente( double pu_vente ) {
-        this.pu_vente = pu_vente;
+    public void setPrix_revient_total( double prix_revient_total ) {
+        this.prix_revient_total = prix_revient_total;
     }
 
-    public double getP_revient() {
-        return p_revient;
+    public double getPrix_revient_avg() {
+        return prix_revient_avg;
     }
 
-    public void setP_revient( double p_revient ) {
-        this.p_revient = p_revient;
-    }
-
-    public double getP_vente() {
-        return p_vente;
-    }
-
-    public void setP_vente( double p_vente ) {
-        this.p_vente = p_vente;
+    public void setPrix_revient_avg( double prix_revient_avg ) {
+        this.prix_revient_avg = prix_revient_avg;
     }
 
     // Overrides

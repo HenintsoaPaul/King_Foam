@@ -2,6 +2,7 @@
 {
     public class FormBloc
     {
+        public string idBloc { get; set; }
         public double L { get; set; }
         public double l { get; set; }
         public double h { get; set; }
@@ -14,6 +15,12 @@
             this.l = l;
             this.h = h;
             this.daty = strDaty;
+            this.prixRevient = ValidatePrixRevient(prixRevient);
+        }
+
+        public FormBloc(string idBloc, double prixRevient)
+        {
+            this.idBloc = idBloc;
             this.prixRevient = ValidatePrixRevient(prixRevient);
         }
 

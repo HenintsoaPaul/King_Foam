@@ -15,8 +15,10 @@ html {
 html {
   position: relative;
   min-height: 100%;
+  font-family: Karla;
 }
 
 body {
+  font-family: Karla;
   margin-bottom: 60px;
 }

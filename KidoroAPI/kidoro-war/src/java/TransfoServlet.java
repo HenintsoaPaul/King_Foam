@@ -44,13 +44,25 @@ public class TransfoServlet extends HeninServlet {
                 blocMere.setDaty_sortie( daty );
                 blocMere.updateToTable( conn );
 
-                blocFille.setId_bloc_mere( blocMere.getId() );
-                blocFille.insertToTable( conn );
+                boolean misyInsertFille = true;
+                double longueur = myTransfo.getLongueur(),
+                        largeur = myTransfo.getLargeur(),
+                        hauteur = myTransfo.getHauteur();
+                if ( longueur == 0 && largeur == 0 && hauteur == 0 ) misyInsertFille = false;
+
+                if ( misyInsertFille ) {
+                    String id_bloc_base = blocMere.getId_bloc_base() == null ?
+                            blocMere.getId() : blocMere.getId_bloc_base();
+                    blocFille.setId_bloc_base( id_bloc_base );
+                    blocFille.setId_bloc_mere( blocMere.getId() );
+                    blocFille.setPrix_revientFromPrv( blocMere.getPrixRevientVolumique() );
+                    blocFille.insertToTable( conn );
+                }
 
                 Transformation t = new Transformation();
                 t.setDaty( daty );
                 t.setId_bloc_mere( blocMere.getId() );
-                t.setId_bloc_reste( blocFille.getId() );
+                if ( misyInsertFille ) t.setId_bloc_reste( blocFille.getId() );
                 t.insertToTable( conn );
 
                 double prixRevientVolumique = blocMere.getPrixRevientVolumique();
@@ -64,10 +76,12 @@ public class TransfoServlet extends HeninServlet {
 
                 List<MyUsuel> myUsuelList = myTransfo.getUsuelACreer();
                 for ( MyUsuel myUsuel : myUsuelList ) {
-                    MvtStockDetail fille = MvtStockDetail.creerFromUsuel( myUsuel, prixRevientVolumique );
-                    fille.setId_mvt_stock( mvtStock.getId() );
+                    MvtStockDetail fille = MvtStockDetail.creerFromUsuel( myUsuel );
 
-                    fille.insertToTable(conn);
+                    if ( fille != null ) {
+                        fille.setId_mvt_stock( mvtStock.getId() );
+                        fille.insertToTable( conn );
+                    }
                 }
 
                 conn.commit();

@@ -8,6 +8,9 @@ public interface IBlocEJB {
     int add( Bloc bloc )
             throws Exception;
 
+    int updatePrixRevient( Bloc bloc, double newPrix )
+            throws Exception;
+
     Bloc[] getAll()
             throws Exception;
 
@@ -15,5 +18,8 @@ public interface IBlocEJB {
             throws Exception;
 
     Bloc getById( String id )
+            throws Exception;
+
+    Bloc[] getAllMere()
             throws Exception;
 }

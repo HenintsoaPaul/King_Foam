@@ -18,7 +18,8 @@ public class UsuelEJB implements IUsuelEJB {
             throws Exception {
         Usuel u = new Usuel();
         u.setVal( val );
-        return ( Usuel ) CGenUtil.rechercher( u, null, null, "" )[0];
+        Usuel[] arr = ( Usuel[] ) CGenUtil.rechercher( u, null, null, "" );
+        return arr.length > 0 ? arr[0] : null;
     }
 
     @Override

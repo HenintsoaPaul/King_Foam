@@ -1,9 +1,10 @@
 package stock;
 
+import bean.CGenUtil;
 import bean.ClassMAPTable;
 import cube.usuel.MyUsuel;
-import cube.usuel.Usuel;
 import utils.EJBGetter;
+import cube.usuel.Usuel;
 
 import java.sql.Connection;
 
@@ -11,7 +12,6 @@ public class MvtStockDetail extends ClassMAPTable {
 
     String id;
     int entree, sortie;
-    double prix_revient;
     String id_usuel, id_mvt_stock;
 
     // Constr
@@ -19,18 +19,15 @@ public class MvtStockDetail extends ClassMAPTable {
         this.setNomTable( "mvt_stock_detail" );
     }
 
-    public static MvtStockDetail creerFromUsuel( MyUsuel myUsuel, double prixRevientVolumique )
+    public static MvtStockDetail creerFromUsuel( MyUsuel myUsuel )
             throws Exception {
-        Usuel usuel = EJBGetter.getUsuelEJB().getByVal( myUsuel.getVal_usuel() );
-        int qte = myUsuel.getQuantite();
+        Usuel u = EJBGetter.getUsuelEJB().getByVal( myUsuel.getVal_usuel() );
+        if ( u == null ) return null;
 
         MvtStockDetail mv = new MvtStockDetail();
-        mv.setEntree( qte );
+        mv.setEntree( myUsuel.getQuantite() );
         mv.setSortie( 0 );
-
-        mv.setPrix_revient( usuel.getVolume() * qte * prixRevientVolumique );
-        mv.setId_usuel( usuel.getId() );
-
+        mv.setId_usuel( u.getId() );
         return mv;
     }
 
@@ -59,13 +56,17 @@ public class MvtStockDetail extends ClassMAPTable {
         this.sortie = sortie;
     }
 
-    public double getPrix_revient() {
-        return prix_revient;
+    public MvtStock getMere( Connection conn )
+            throws Exception {
+        MvtStock mv = new MvtStock();
+        mv.setId( this.getId_mvt_stock() );
+        MvtStock[] arr = ( MvtStock[] ) CGenUtil.rechercher( mv, null, null, conn, "" )[ 0 ];
+        return arr.length > 0 ? arr[ 0 ] : null;
     }
 
-    public void setPrix_revient( double prix_revient ) {
-        if ( prix_revient <= 0 ) throw new IllegalArgumentException( "prixRevient must be > 0" );
-        this.prix_revient = prix_revient;
+    public double getPrixRevientVolumique( Connection conn )
+            throws Exception {
+        return getMere( conn ).getPrix_revient_volumique();
     }
 
     public String getId_usuel() {

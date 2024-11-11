@@ -1,18 +1,19 @@
-using KidoroApp.Models;
+using Kidoro.Services;
 using KidoroApp.Models.formModels;
+using KidoroApp.Models.viewModels;
 using KidoroApp.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace KidoroApp.Controllers
 {
-    public class BlocController : Controller
+    public class BlocController(HttpClient httpClient) : Controller
     {
+        private readonly BlocService _blocService = new(httpClient);
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View("Add");
+            var viewModel = new BlocViewModel(await _blocService.GetAllBlocMere(), await _blocService.GetAllBloc());
+            return View(viewModel);
         }
 
         public IActionResult Add()
@@ -21,15 +22,29 @@ namespace KidoroApp.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> CreateBloc(double longueur, double largeur, double h, string daty, double prixRevient)
+        public IActionResult CreateBloc(double longueur, double largeur, double h, string daty, double prixRevient)
         {
             FormBloc block = new FormBloc(longueur, largeur, h, daty, prixRevient);
 
             string endPoint = "blocs";
-            _ = ServletService.Send(block, endPoint);
+            _ = ServletService.SendPost(block, endPoint);
 
-            var view = View("Index", block);
-            return Task.FromResult<IActionResult>(view);
+            TempData["SuccessMessage"] = "Bloc inseree avec succès!";
+
+            return RedirectToAction("Add");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateBloc(string bloc, double prixRevient)
+        {
+            FormBloc block = new FormBloc(bloc, prixRevient);
+
+            string endPoint = "blocs";
+            _ = ServletService.SendPut(block, endPoint);
+
+            TempData["SuccessMessage"] = "Bloc mis à jour avec succès!";
+
+            return RedirectToAction("Index");
         }
     }
 }

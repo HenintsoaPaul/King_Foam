@@ -19,7 +19,7 @@ public class MyUsuel {
     public double getVolume()
             throws Exception {
         Usuel usuel = EJBGetter.getUsuelEJB().getByVal( this.getVal_usuel() );
-        return usuel.getVolume();
+        return usuel == null ? 0 : usuel.getVolume();
     }
 
     // Oth

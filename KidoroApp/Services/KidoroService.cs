@@ -15,15 +15,6 @@ public class KidoroService(HttpClient httpClient)
         return result ?? [];
     }
 
-    public async Task<List<Bloc>> GetAllBloc()
-    {
-        const string requestUri = BaseUrl + "/blocs";
-        var response = await httpClient.GetAsync(requestUri);
-        if (!response.IsSuccessStatusCode) return [];
-        var result = await response.Content.ReadFromJsonAsync<List<Bloc>>();
-        return result ?? [];
-    }
-
     public async Task<List<Bloc>> GetAllBlocInStock()
     {
         const string requestUri = BaseUrl + "/blocs?action=stock";
@@ -31,5 +22,12 @@ public class KidoroService(HttpClient httpClient)
         if (!response.IsSuccessStatusCode) return [];
         var result = await response.Content.ReadFromJsonAsync<List<Bloc>>();
         return result ?? [];
+    }
+
+    public async Task<Teta> GetTeta()
+    {
+        const string requestUri = BaseUrl + "/teta";
+        var response = await httpClient.GetAsync(requestUri);
+        return await response.Content.ReadFromJsonAsync<Teta>();
     }
 }

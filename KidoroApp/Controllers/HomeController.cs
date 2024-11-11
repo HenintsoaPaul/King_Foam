@@ -1,17 +1,14 @@
+using Kidoro.Services;
 using KidoroApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace KidoroApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(HttpClient httpClient, ILogger<HomeController> logger) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<HomeController> _logger = logger;
+        private UsuelService _usuelService = new(httpClient);
 
         public IActionResult Index()
         {

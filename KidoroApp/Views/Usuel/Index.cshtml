@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Usuel>;
+
+@{
+    ViewData["Title"] = "Nos Produit";
+}
+
+<h2 class="mb-4">Nos Produit</h2>
+
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Modele</th>
+            <th>Prix Vente</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var usuel in Model)
+        {
+            <tr>
+                <td>@usuel.id</td>
+                <td>@usuel.val</td>
+                <td>@(String.Format("{0:N2}", usuel.prix_vente))</td>
+            </tr>
+        }
+    </tbody>
+</table>

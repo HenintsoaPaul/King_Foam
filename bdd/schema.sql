@@ -145,6 +145,7 @@ CREATE TABLE bloc
     largeur      NUMBER(15, 5) NOT NULL,
     hauteur      NUMBER(15, 5) NOT NULL,
     id_bloc_mere VARCHAR2(50),
+    id_bloc_base VARCHAR2(50),
     PRIMARY KEY (id),
     FOREIGN KEY (id_bloc_mere) REFERENCES bloc (id)
 );
@@ -207,53 +208,56 @@ CREATE TABLE mvt_stock_detail
     id           VARCHAR2(50),
     entree       NUMBER(10),
     sortie       NUMBER(10),
-    prix_revient NUMBER(15, 5) NOT NULL,
-    id_usuel     VARCHAR2(50)  NOT NULL,
-    id_mvt_stock VARCHAR2(50)  NOT NULL,
+    id_usuel     VARCHAR2(50) NOT NULL,
+    id_mvt_stock VARCHAR2(50) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_usuel) REFERENCES usuel (id),
     FOREIGN KEY (id_mvt_stock) REFERENCES mvt_stock (id)
 );
 
 -- Views
+CREATE OR REPLACE VIEW bloc_lib AS
+select b.*,
+       b.LONGUEUR * b.LARGEUR * b.HAUTEUR as vol_bloc
+from bloc b;
+
 CREATE OR REPLACE VIEW usuel_lib AS
 SELECT USUEL.*,
        LONGUEUR * LARGEUR * HAUTEUR                as volume,
        PRIX_VENTE / (LONGUEUR * LARGEUR * HAUTEUR) as rapport
 FROM usuel;
 
--- CREATE OR REPLACE VIEW v_stock_usuel AS
--- select t.*,
---        u.PRIX_VENTE               as pu_vente,
---        u.PRIX_VENTE * t.qte_total as p_vente,
---        t.pu_revient * t.qte_total as p_revient
--- from USUEL u
---          join (select ID_USUEL,
---                       sum(ENTREE)       as qte_total,
---                       sum(PRIX_REVIENT) as pu_revient
---                from mvt_stock_detail
---                group by ID_USUEL) t
---               on u.ID = t.ID_USUEL;
+CREATE OR REPLACE VIEW mvt_stock_detail_lib AS
+select mv_fille.id,
+       mv_fille.id_mvt_stock,
+       mv_fille.id_usuel,
+       u.val                                                       as val_usuel,
+       mv_fille.entree,
+       mv_fille.sortie,
+       u.volume                                                    as vol_usuel,
+       mv_mere.prix_revient_volumique                              as pr_vol,
+       mv_mere.prix_revient_volumique * mv_fille.entree * u.volume as pr_total,
+       u.PRIX_VENTE                                                as pv_usuel,
+       u.prix_vente * mv_fille.entree                              as pv_total
+from MVT_STOCK_DETAIL mv_fille
+         join USUEL_LIB u on mv_fille.ID_USUEL = u.id
+         join mvt_stock mv_mere on mv_fille.id_mvt_stock = mv_mere.id;
 
 CREATE OR REPLACE VIEW v_stock_usuel AS
-select t.*,
-       u.PRIX_VENTE                 as pu_vente,
-       u.PRIX_VENTE * t.qte_total   as p_vente,
-       avg_pu_revient * t.qte_total as p_revient
-from USUEL u
-         join (select ID_USUEL,
-                      sum(ENTREE)                as qte_total,
-                      avg(PRIX_REVIENT / ENTREE) as avg_pu_revient
-               from mvt_stock_detail
-               group by ID_USUEL) t
-              on u.ID = t.ID_USUEL;
+select ID_USUEL,
+       sum(ENTREE)                 as qte_total,
+       sum(PV_TOTAL)               as prix_vente_total,
+       sum(PR_TOTAL)               as prix_revient_total,
+       sum(PR_TOTAL) / sum(ENTREE) as prix_revient_avg
+from MVT_STOCK_DETAIL_LIB
+group by ID_USUEL;
 
-CREATE OR REPLACE VIEW maxRapport AS
-select *
-from (SELECT *
-      FROM USUEL_LIB
-      ORDER BY rapport DESC)
-where ROWNUM <= 1;
+-- CREATE OR REPLACE VIEW maxRapport AS
+-- select *
+-- from (SELECT *
+--       FROM USUEL_LIB
+--       ORDER BY rapport DESC)
+-- where ROWNUM <= 1;
 
 CREATE OR REPLACE VIEW minVolume AS
 select *
@@ -262,18 +266,31 @@ from (SELECT *
       ORDER BY volume)
 where ROWNUM <= 1;
 
+CREATE OR REPLACE VIEW bloc_stock_lib AS
+select b.id           as id_bloc,
+       u.id           as id_usuel,
+       u.prix_vente   as pv_usuel,
+       b.vol_bloc,
+       u.volume       as vol_usuel,
+       u.rapport,
+       b.prix_revient as pr_bloc
+from bloc_lib b
+         inner join USUEL_LIB u on u.VOLUME <= b.VOL_BLOC
+where b.DATY_SORTIE is null;
+
 CREATE OR REPLACE VIEW v_stock_bloc_optim AS
-select b.id                                                                                    as id_bloc,
-       maxRapport.id                                                                           as id_usuel,
-       maxRapport.PRIX_VENTE                                                                   as pv_usuel,
-       b.LONGUEUR * b.LARGEUR * b.HAUTEUR                                                      as vol_block,
-       maxRapport.VOLUME                                                                       as vol_usuel,
-       TRUNC((b.LONGUEUR * b.LARGEUR * b.HAUTEUR) / maxRapport.VOLUME)                         as qte_produit,
-       b.PRIX_REVIENT                                                                          as pr_bloc,
-       TRUNC((b.LONGUEUR * b.LARGEUR * b.HAUTEUR) / maxRapport.VOLUME) * maxRapport.PRIX_VENTE as pv_bloc
-from bloc b
-         cross join maxRapport
-where DATY_SORTIE is null;
+select t.id_bloc,
+       t.id_usuel,
+       t.pv_usuel,
+       t.vol_bloc,
+       t.vol_usuel,
+       TRUNC(t.vol_bloc / t.vol_usuel)              as qte_produit,
+       t.pr_bloc,
+       TRUNC(t.vol_bloc / t.vol_usuel) * t.pv_usuel as pv_bloc
+from bloc_stock_lib t
+         right join (select id_bloc, max(rapport) as rap
+                     from bloc_stock_lib
+                     group by id_bloc) t2 on t.id_bloc = t2.id_bloc and t.rapport = t2.rap;
 
 CREATE OR REPLACE VIEW v_stock_bloc_min AS
 select b.id                                                                                  as id_bloc,

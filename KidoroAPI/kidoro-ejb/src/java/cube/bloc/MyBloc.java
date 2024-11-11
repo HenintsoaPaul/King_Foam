@@ -6,9 +6,15 @@ import java.text.ParseException;
 
 public class MyBloc {
 
+    String idBloc;
     double L, l, h;
     String daty;
     double prixRevient;
+
+    // Getters n Setters
+    public double getPrixRevient() {
+        return prixRevient;
+    }
 
     public Bloc creerBloc()
             throws ParseException {
@@ -18,6 +24,14 @@ public class MyBloc {
         bloc.setHauteur( this.h );
         bloc.setPrix_revient( this.prixRevient );
         bloc.setDaty_entree( DateUtil.strToDate( this.daty ) );
+
+        return bloc;
+    }
+
+    public Bloc creerBlocUpdate() {
+        Bloc bloc = new Bloc();
+        bloc.setPrix_revient( this.prixRevient );
+        bloc.setId( this.idBloc );
 
         return bloc;
     }

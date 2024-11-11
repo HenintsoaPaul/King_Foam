@@ -5,6 +5,14 @@
 <section class="container mt-5">
     <h1 class="text-center">@ViewData["Title"]</h1>
 
+        @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <form method="post" asp-controller="Bloc" asp-action="CreateBloc" class="form">
         <div class="row">
             <div class="col-6">

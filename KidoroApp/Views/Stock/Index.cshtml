@@ -4,46 +4,54 @@
     ViewData["Title"] = "Etat-Stock";
 }
 
-<section id="usuel">
-    <h3>Forme Usuelles en stock</h3>
+<h1 class="mb-4">- ETU 2443 -</h1>
 
-    <table class="table table-striped">
+<h2 class="mb-4">État du Stock</h2>
+
+<section id="usuel">
+    <h3 class="mt3 mb-4">Forme Usuelles en stock</h3>
+
+    <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
                 <th>Forme</th>
                 <th>Quantite</th>
-                <th>Sum Prix Vente</th>
-                <th>Sum Prix Revient</th>
+                <th>Prix Vente</th>
+                <th>Prix Revient</th>
+                <th>Prix Revient Avg</th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach (var stockUsuel in Model.Usuels)
+            @foreach (var usuel in Model.Usuels)
             {
                 <tr>
-                    <td>@stockUsuel.id_usuel</td>
-                    <td>@stockUsuel.qte_total</td>
-                    <td>@stockUsuel.p_vente</td>
-                    <td>@stockUsuel.p_revient</td>
+                    <td>@usuel.id_usuel</td>  
+                    <td>@usuel.qte_total</td>  
+                    <td>@( String.Format( "{0:N2}", usuel.prix_vente_total ) )</td>
+                    <td>@( String.Format( "{0:N2}", usuel.prix_revient_total ) )</td>
+                    <td>@( String.Format( "{0:N2}", usuel.prix_revient_avg ) )</td>
                 </tr>
             }
         </tbody>
 
         <tfoot>
             <tr>
-                <th>TOTAL</th>
-                <th>@Model.GetTotalQuantiteUsuels()</th>
-                <th>@Model.GetTotalPrixVenteUsuels()</th>
-                <th>@Model.GetTotalPrixVenteUsuels()</th>
+                <th colspan="2">TOTAL</th>
+                <th>@Model.Usuels.Sum(u => u.qte_total)</th>
+                <th>@( String.Format( "{0:N2}", @Model.Usuels.Sum(u => u.prix_vente_total) ) )</th>
+                <th>@( String.Format( "{0:N2}", @Model.Usuels.Sum(u => u.prix_revient_total) ) )</th>
             </tr>
         </tfoot>
     </table>
 </section>
 
-<section id="bloc optim">
-    <h3>Blocs en stock (Optimiste)</h3>
+<hr class="my-5" />
 
-    <table class="table table-striped">
+<section id="bloc optim">
+    <h3 class="mt3 mb-4">Blocs en stock (Optimiste)</h3>
+
+    <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
                 <th>IdBloc</th>
@@ -61,27 +69,20 @@
                     <td>@stockBloc.id_bloc</td>
                     <td>@stockBloc.id_usuel</td>
                     <td>@stockBloc.qte_produit</td>
-                    <td>@stockBloc.pv_bloc</td>
-                    <td>@stockBloc.pr_bloc</td>
+                    <td>@( String.Format( "{0:N2}", stockBloc.pv_bloc ) )</td>
+                    <td>@( String.Format( "{0:N2}", stockBloc.pr_bloc ) )</td>
                 </tr>
             }
         </tbody>
-
-@*         <tfoot>
-            <tr>
-                <th>TOTAL</th>
-                <th>@Model.GetTotalPrixRevientBloc()</th>
-                <th>@Model.GetTotalPrixVenteOptimisteBloc()</th>
-                <th>@Model.GetTotalPrixVenteVolMinBloc()</th>
-            </tr>
-        </tfoot> *@
     </table>
 </section>
 
-<section id="bloc min">
-    <h3>Blocs en stock (Volume Min)</h3>
+<hr class="my-5" />
 
-    <table class="table table-striped">
+<section id="bloc min">
+    <h3 class="mt3 mb-4">Blocs en stock (Volume Min)</h3>
+
+    <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
                 <th>IdBloc</th>
@@ -99,19 +100,10 @@
                     <td>@stockBloc.id_bloc</td>
                     <td>@stockBloc.id_usuel</td>
                     <td>@stockBloc.qte_produit</td>
-                    <td>@stockBloc.pv_bloc</td>
-                    <td>@stockBloc.pr_bloc</td>
+                    <td>@( String.Format( "{0:N2}", stockBloc.pv_bloc ) )</td>
+                    <td>@( String.Format( "{0:N2}", stockBloc.pr_bloc ) )</td>
                 </tr>
             }
         </tbody>
-
-        @*         <tfoot>
-        <tr>
-        <th>TOTAL</th>
-        <th>@Model.GetTotalPrixRevientBloc()</th>
-        <th>@Model.GetTotalPrixVenteOptimisteBloc()</th>
-        <th>@Model.GetTotalPrixVenteVolMinBloc()</th>
-        </tr>
-        </tfoot> *@
     </table>
 </section>

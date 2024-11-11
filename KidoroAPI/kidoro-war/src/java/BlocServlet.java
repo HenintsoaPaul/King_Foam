@@ -25,6 +25,8 @@ public class BlocServlet extends HeninServlet {
                 arr = EJBGetter.getBlocEJB().getAll();
             } else if ( action.equalsIgnoreCase( "stock" ) ) {
                 arr = EJBGetter.getBlocEJB().getAllInStock();
+            } else if ( action.equalsIgnoreCase( "mere" ) ) {
+                arr = EJBGetter.getBlocEJB().getAllMere();
             }
 
             resp.getWriter().println( this.gson.toJson( arr ) );
@@ -47,6 +49,27 @@ public class BlocServlet extends HeninServlet {
             Bloc bloc = myBloc.creerBloc();
 
             EJBGetter.getBlocEJB().add( bloc );
+        } catch ( Exception e ) {
+            resp.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+            resp.getWriter().write( gson.toJson( new JsonError( "Erreur interne" ) ) );
+
+            throw new RuntimeException( e );
+        }
+    }
+
+    @Override
+    protected void doPut( HttpServletRequest req, HttpServletResponse resp )
+            throws IOException {
+        try {
+            super.setCORS( resp );
+            String json = JsonUtil.getFromWeb( req );
+            super.dataOk( resp );
+
+            System.out.println( json );
+            MyBloc myBloc = gson.fromJson( json, MyBloc.class );
+            Bloc bloc = myBloc.creerBlocUpdate();
+
+            EJBGetter.getBlocEJB().updatePrixRevient( bloc, myBloc.getPrixRevient() );
         } catch ( Exception e ) {
             resp.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
             resp.getWriter().write( gson.toJson( new JsonError( "Erreur interne" ) ) );

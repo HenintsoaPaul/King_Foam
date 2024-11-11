@@ -31,6 +31,27 @@ public class BlocEJB implements IBlocEJB {
     }
 
     @Override
+    public int updatePrixRevient( Bloc bloc, double newPrix )
+            throws Exception {
+        Connection conn = null;
+        try {
+            conn = new UtilDB().GetConn();
+            conn.setAutoCommit( false );
+
+            bloc.updatePrixRevientMaman( conn, newPrix );
+
+            conn.close();
+            return 1;
+        } catch ( Exception e ) {
+            if ( conn != null ) conn.rollback();
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if ( conn != null ) conn.close();
+        }
+    }
+
+    @Override
     public Bloc[] getAll()
             throws Exception {
         return ( Bloc[] ) CGenUtil.rechercher( new Bloc(), null, null, "" );
@@ -48,6 +69,14 @@ public class BlocEJB implements IBlocEJB {
             throws Exception {
         Bloc b = new Bloc();
         b.setId( id );
-        return ( Bloc ) CGenUtil.rechercher( b, null, null, "" )[0];
+        Bloc[] arr = ( Bloc[] ) CGenUtil.rechercher( b, null, null, "" );
+        return arr.length > 0 ? arr[0] : null;
+    }
+
+    @Override
+    public Bloc[] getAllMere()
+            throws Exception {
+        String apresWhere = " and id_bloc_mere is null";
+        return ( Bloc[] ) CGenUtil.rechercher( new Bloc(), null, null, apresWhere );
     }
 }

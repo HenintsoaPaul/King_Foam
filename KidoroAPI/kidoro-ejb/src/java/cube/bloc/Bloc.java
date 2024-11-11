@@ -1,8 +1,12 @@
 package cube.bloc;
 
+import bean.CGenUtil;
 import cube.Cube;
+import stock.MvtStock;
 import transformation.MyTransfo;
+import transformation.Transformation;
 import utils.DateUtil;
+import utils.EJBGetter;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -15,7 +19,7 @@ public class Bloc extends Cube implements Serializable {
     Date daty_entree;
     Date daty_sortie;
     double prix_revient;
-    String id_bloc_mere;
+    String id_bloc_mere, id_bloc_base;
 
     // Constr
     public Bloc() {
@@ -27,12 +31,18 @@ public class Bloc extends Cube implements Serializable {
         Bloc bFille = new Bloc();
         bFille.setDaty_entree( DateUtil.strToDate( myTransfo.getDaty() ) );
         bFille.setId_bloc_mere( myTransfo.getId_bloc() );
+        bFille.setPrix_revientFromPrv( prixRevientVolumique );
+
+        double L = myTransfo.getLongueur(),
+                l = myTransfo.getLargeur(),
+                h = myTransfo.getHauteur();
+        if ( L == 0 && l == 0 && h == 0 ) {
+            return bFille;
+        }
 
         bFille.setLongueur( myTransfo.getLongueur() );
         bFille.setLargeur( myTransfo.getLargeur() );
         bFille.setHauteur( myTransfo.getHauteur() );
-
-        bFille.setPrix_revientFromPrv( prixRevientVolumique );
         return bFille;
     }
 
@@ -83,6 +93,7 @@ public class Bloc extends Cube implements Serializable {
      */
     public void setPrix_revientFromPrv( double prixRevientVolumique ) {
         if ( prixRevientVolumique <= 0 ) throw new IllegalArgumentException( "prixRevientVolumique must be > 0" );
+        System.out.println("pr_vol: " + prixRevientVolumique + " | vol: " + this.getVolume());
         this.prix_revient = this.getVolume() * prixRevientVolumique;
     }
 
@@ -92,6 +103,14 @@ public class Bloc extends Cube implements Serializable {
 
     public void setId_bloc_mere( String id_bloc_mere ) {
         this.id_bloc_mere = id_bloc_mere;
+    }
+
+    public String getId_bloc_base() {
+        return id_bloc_base;
+    }
+
+    public void setId_bloc_base( String id_bloc_base ) {
+        this.id_bloc_base = id_bloc_base;
     }
 
     // Advanced Getters
@@ -122,5 +141,84 @@ public class Bloc extends Cube implements Serializable {
             throws Exception {
         this.controler();
         return super.insertToTable( cDb );
+    }
+
+    // Alea
+    public Bloc getFille( Connection conn )
+            throws Exception {
+        Bloc b = new Bloc();
+        b.setId_bloc_mere( this.getId() );
+        Bloc[] arr = ( Bloc[] ) CGenUtil.rechercher( b, null, null, conn, "" );
+        return arr.length > 0 ? arr[ 0 ] : null;
+    }
+
+    public Transformation getTransfo( Connection conn )
+            throws Exception {
+        Transformation t = new Transformation();
+        t.setId_bloc_mere( this.getId() );
+        Transformation[] arr = ( Transformation[] ) CGenUtil.rechercher( t, null, null, conn, "" );
+        return arr.length > 0 ? arr[ 0 ] : null;
+    }
+
+    public MvtStock getMvtStock( Connection conn, String idOrigine )
+            throws Exception {
+        MvtStock mv = new MvtStock();
+        mv.setId_origine( idOrigine );
+        return ( MvtStock ) CGenUtil.rechercher( mv, null, null, conn, "" )[ 0 ];
+    }
+
+    public void updateUsuels( Connection conn )
+            throws Exception {
+        Transformation t = getTransfo( conn );
+        if ( t == null ) {
+            System.out.println( "Mbola tsy nisy transfo" );
+        } else {
+            MvtStock mvtStock = getMvtStock( conn, t.getId() );
+            mvtStock.updatePrixRevient( conn, this.getPrixRevientVolumique() );
+        }
+    }
+
+    public void updatePrixRevientMaman( Connection conn, double newPrix )
+            throws Exception {
+        try {
+            conn.setAutoCommit( false );
+
+            Bloc b = EJBGetter.getBlocEJB().getById( this.getId() );
+
+            if ( b.getId_bloc_mere() != null ) throw new Exception( "N'est pas une mere final" );
+
+            double proportion = newPrix / b.getPrix_revient();
+            b.setPrix_revient( newPrix );
+            b.updateToTable( conn );
+
+            if ( b.getDaty_sortie() != null ) b.updateUsuels( conn );
+
+            Bloc fille = getFille( conn );
+            if ( fille == null ) {
+                System.out.println( "Pas de fille pour cet bloc mere" );
+            } else {
+                fille.updatePrixRevientFille( conn, proportion );
+            }
+
+            conn.commit();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            conn.rollback();
+        }
+    }
+
+    public void updatePrixRevientFille( Connection conn, double proportion )
+            throws Exception {
+        this.setPrix_revient( this.getPrix_revient() * proportion );
+        this.updateToTable( conn );
+
+        if ( this.getDaty_sortie() != null )  this.updateUsuels( conn );
+
+        Bloc fille = getFille( conn );
+        if ( fille == null ) {
+            System.out.println( "Plus de fille pour cette lignee" );
+        } else {
+            fille.updatePrixRevientFille( conn, proportion );
+        }
     }
 }

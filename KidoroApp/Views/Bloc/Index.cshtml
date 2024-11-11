@@ -1,7 +1,112 @@
-﻿@{
-    ViewData["Title"] = "Add Block Page";
+﻿@model KidoroApp.Models.viewModels.BlocViewModel;
+
+@{
+    ViewData["Title"] = "Liste Blocs";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Add block</h1>
+    <section id="add-bloc">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+        <h3 class="mt3 mb-4">Mise a jour prix revient</h3>
+
+        <form method="post" asp-controller="Bloc" asp-action="UpdateBloc" class="form">
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="BlocSelect">Bloc</label>
+                    <select required id="BlocSelect" name="Bloc" class="form-select">
+                        @foreach (var bloc in Model.BlocMere)
+                        {
+                            <option value="@bloc.id" data-volume="@bloc.GetVolume()">
+                                @bloc.id
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group col-6">
+                    <label for="PrixRevient">Prix Revient</label>
+                    <input required value="0" type="text" class="form-control decimal" id="PrixRevient"
+                        name="PrixRevient" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block">
+                Update
+            </button>
+        </form>
+    </section>
+
+    <hr class="my-5" />
+
+    <section id="list-bloc">
+        <h3 class="mt3 mb-4">Liste Blocs</h3>
+
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Id Mere</th>
+                    <th>Id Ancetre</th>
+                    <th>Date Entree</th>
+                    <th>Date Sortie</th>
+                    <th>Prix Revient</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var bloc in Model.BlocAll)
+                {
+                    <tr>
+                        <td>@bloc.id</td>
+                        <td>@bloc.id_bloc_mere</td>
+                        <td>@bloc.id_bloc_base</td>
+                        <td>@bloc.daty_entree</td>
+                        <td>@bloc.daty_sortie</td>
+                        <td>@(String.Format("{0:N2}", bloc.prix_revient))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
 </div>
+
+
+
+
+<script>
+
+    document.addEventListener( 'DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll( '.decimal' );
+
+        inputs.forEach( input => {
+            let timeoutId;
+
+            input.addEventListener( 'input', function ( e ) {
+                clearTimeout( timeoutId );
+
+                timeoutId = setTimeout( () => {
+                    validateInput( e.target );
+                }, 2000 );
+            } );
+        } );
+
+        function validateInput( inputElement ) {
+            let value = inputElement.value;
+
+            // Vérifie si la valeur est déjà valide
+            if ( !isNaN( parseFloat( value ) ) && isFinite( value ) ) {
+                inputElement.value = parseFloat( value ).toFixed( 2 );
+            } else {
+                inputElement.value = '';
+            }
+        }
+    } );
+
+</script>

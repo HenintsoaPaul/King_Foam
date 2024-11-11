@@ -85,9 +85,9 @@ public class MyTransfo {
 
     private void controllerReste()
             throws Exception {
-        if ( this.getLongueur() <= 0 ) throw new Exception( "Longueur must be > 0" );
-        if ( this.getLargeur() <= 0 ) throw new Exception( "Largeur must be > 0" );
-        if ( this.getHauteur() <= 0 ) throw new Exception( "Hauteur must be > 0" );
+        if ( this.getLongueur() < 0 ) throw new Exception( "Longueur must be >= 0" );
+        if ( this.getLargeur() < 0 ) throw new Exception( "Largeur must be >= 0" );
+        if ( this.getHauteur() < 0 ) throw new Exception( "Hauteur must be >= 0" );
     }
 
     private void controllerUsuels()
@@ -113,21 +113,24 @@ public class MyTransfo {
                 volumeBlockMere = blocMere.getVolume();
 
         if ( volumeBlockMere < sumVolumeUsuels )
-            throw new Exception( "Volume BlockMere["+volumeBlockMere+"] < Sum Volume Usuel["+sumVolumeUsuels+"]" );
+            throw new Exception( "Volume BlockMere[" + volumeBlockMere + "] < Sum Volume Usuel[" + sumVolumeUsuels + "]" );
 
         double volumeResteTheorique = volumeBlockMere - sumVolumeUsuels,
                 volumeResteReel = blocFille.getVolume();
 
         if ( volumeResteTheorique < volumeResteReel )
-            throw new Exception( "Volume reste theorique["+volumeResteTheorique+"] < Volume reste reel ["+volumeResteReel+"]" );
+            throw new Exception( "Volume reste theorique[" + volumeResteTheorique + "] < Volume reste reel [" + volumeResteReel + "]" );
 
         Teta teta = EJBGetter.getTetaEJB().get();
-        double perteTolerable = volumeResteTheorique * teta.getVal(),
+        double perteTolerable = volumeBlockMere * teta.getVal(),
                 perte = Math.abs( volumeResteTheorique - volumeResteReel );
 
         if ( perte > perteTolerable )
             throw new Exception( "La perte de transformation n'est pas tolerable. Perte: "
-                    + perte + " | Tolerence: " + perteTolerable );
+                    + perte + " | Tolerance: " + perteTolerable );
+
+        System.out.println( "\nResteTh: " + volumeResteTheorique + " | ResteReel: " + volumeResteReel );
+        System.out.println( "Perte: " + perte + " | Tolerance: " + perteTolerable + "\n" );
     }
 
     // json

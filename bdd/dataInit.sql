@@ -4,13 +4,13 @@ VALUES ('TETA001', 0.2);
 
 -- Forme
 INSERT INTO USUEL(id, val, prix_vente, longueur, largeur, hauteur)
-VALUES ('FORME001', 'F1', 200, 2, 2, 1);
+VALUES ('U1', 'King', 20000, 16, 4, 2);
 INSERT INTO USUEL(id, val, prix_vente, longueur, largeur, hauteur)
-VALUES ('FORME002', 'F2', 180, 2, 1.5, 1);
+VALUES ('U2', 'Queen', 12000, 10, 7, 1);
 INSERT INTO USUEL(id, val, prix_vente, longueur, largeur, hauteur)
-VALUES ('FORME003', 'F3', 250, 2, 2, 1.5);
-INSERT INTO USUEL(id, val, prix_vente, longueur, largeur, hauteur)
-VALUES ('FORME004', 'Eponge', 20, 0.2, 0.1, 0.1);
+VALUES ('U3', 'Voay', 600, 5, 1, 1);
+-- INSERT INTO USUEL(id, val, prix_vente, longueur, largeur, hauteur)
+-- VALUES ('U4', 'Eponge', 50, 0.1, 0.1, 0.1);
 
 -- TypeMvtStock
 INSERT INTO TYPE_MVT_STOCK(id, val, desce)

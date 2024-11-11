@@ -1,6 +1,7 @@
 package etatStock;
 
 import bean.CGenUtil;
+import stock.MvtStockDetailLib;
 
 import javax.ejb.Stateless;
 
@@ -23,5 +24,11 @@ public class StockEJB implements IStockEJB {
     public StockBlocMin[] getStockBlocMin()
             throws Exception {
         return ( StockBlocMin[] ) CGenUtil.rechercher( new StockBlocMin(), null, null, "" );
+    }
+
+    @Override
+    public MvtStockDetailLib[] getAllUsuelLib()
+            throws Exception {
+        return ( MvtStockDetailLib[] ) CGenUtil.rechercher( new MvtStockDetailLib(), null, null, "" );
     }
 }

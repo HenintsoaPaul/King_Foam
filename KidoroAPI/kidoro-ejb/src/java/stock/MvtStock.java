@@ -84,4 +84,11 @@ public class MvtStock extends ClassMAPTable {
         this.preparePk( "MVST", "GET_SEQ_MVT_STOCK" );
         this.setId( makePK( c ) );
     }
+
+    // Update Prix Revient
+    public void updatePrixRevient( Connection conn, double prix_revient_volumique )
+            throws Exception {
+        this.setPrix_revient_volumique( prix_revient_volumique );
+        this.updateToTable( conn );
+    }
 }
