@@ -114,20 +114,22 @@ CREATE TABLE consommable
     FOREIGN KEY (id_unite) REFERENCES unite (id)
 );
 
-CREATE TABLE composant_fabrication
+CREATE TABLE formule_fabrication
 (
     id             VARCHAR2(50),
-    qte_requis     NUMBER(15, 5) NOT NULL,
+    qte            NUMBER(15, 5) NOT NULL,
     id_consommable VARCHAR2(50)  NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_consommable) REFERENCES consommable (id)
 );
 
-CREATE TABLE achat
+CREATE TABLE achat_consommable
 (
     id             VARCHAR2(50),
     daty           DATE         NOT NULL,
     qte            NUMBER(15, 5),
+    reste          NUMBER(15, 5),
+    pu             NUMBER(15, 5),
     id_consommable VARCHAR2(50) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_consommable) REFERENCES consommable (id)
