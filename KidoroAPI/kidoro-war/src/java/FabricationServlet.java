@@ -19,7 +19,7 @@ public class FabricationServlet extends HeninServlet {
             IFabricationEJB ejb = EJBGetter.getFabricationEJB();
 
             int nbFabrication = 2;
-            ejb.doFabrications( nbFabrication, sessionEjb.getFormulesFabrication() );
+            ejb.doFabrications( nbFabrication, sessionEjb );
         } catch ( Exception e ) {
             e.printStackTrace();
             resp.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );

@@ -1,4 +1,4 @@
-package fabrication;
+package fabrication.machine;
 
 import bean.ClassMAPTable;
 
@@ -7,7 +7,7 @@ import java.sql.Connection;
 public class Machine extends ClassMAPTable {
 
     String id;
-    double val;
+    String val;
 
     // Constr
     public Machine() {
@@ -23,11 +23,11 @@ public class Machine extends ClassMAPTable {
         this.id = id;
     }
 
-    public double getVal() {
+    public String getVal() {
         return val;
     }
 
-    public void setVal( double val ) {
+    public void setVal( String val ) {
         this.val = val;
     }
 

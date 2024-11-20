@@ -5,6 +5,7 @@ import cube.usuel.IUsuelEJB;
 import etatStock.IStockEJB;
 import fabrication.IAchatConsommableEJB;
 import fabrication.IFormuleFabricationEJB;
+import fabrication.machine.IMachineEJB;
 import session.ISessionKidoroEJB;
 import teta.ITetaEJB;
 import fabrication.IFabricationEJB;
@@ -69,5 +70,12 @@ public abstract class EJBGetter {
         Context ctx = new InitialContext();
         String jndi = "java:global/kidoro/SessionKidoroEJB!session.ISessionKidoroEJB";
         return ( ISessionKidoroEJB ) ctx.lookup( jndi );
+    }
+
+    public static IMachineEJB getMachineEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/MachineEJB!fabrication.machine.IMachineEJB";
+        return ( IMachineEJB ) ctx.lookup( jndi );
     }
 }

@@ -2,6 +2,7 @@ package fabrication;
 
 import bean.CGenUtil;
 import cube.bloc.Bloc;
+import session.ISessionKidoroEJB;
 import utilitaire.UtilDB;
 import utils.DateUtil;
 
@@ -49,7 +50,6 @@ public class FabricationEJB implements IFabricationEJB {
         AchatConsommable ac = new AchatConsommable();
         ac.setId_consommable( idConsommable );
         String datyStr = "TO_DATE('" + daty.toString() + "', 'YYYY-MM-DD')";
-        System.out.println( datyStr );
         String apresWhere = " and reste > 0 and daty <= " + datyStr + " order by daty, id";
         AchatConsommable[] arr = ( AchatConsommable[] ) CGenUtil.rechercher( ac, null, null, conn, apresWhere );
         return arr.length > 0 ? arr : null;
@@ -57,15 +57,15 @@ public class FabricationEJB implements IFabricationEJB {
 
     // ------------------------------------
     @Override
-    public void doFabrications( int nbFabrication, FormuleFabrication[] formuleFabrications )
+    public void doFabrications( int nbFabrication, ISessionKidoroEJB session )
             throws Exception {
         Connection conn = null;
         try {
             conn = new UtilDB().GetConn();
             conn.setAutoCommit( false );
 
-            // TODO: machines random
-            String[] machines = new String[]{ "machine1", "machine2", "machine3" };
+            // TODO: get inits
+            FormuleFabrication[] formuleFabrications = session.getFormulesFabrication();
 
             // TODO: daty random [2022-2024]
             String randomDaty = "2022-10-27";
@@ -87,7 +87,7 @@ public class FabricationEJB implements IFabricationEJB {
                 System.out.println( "prt: " + prPratiqueVolumique + " | th: " + prTheoriqueVolumique );
 
                 Bloc bloc = new Bloc( daty, longueur, largeur, hauteur, prTheoriqueVolumique, prPratiqueVolumique );
-                bloc.setId_machine( machines[0] );
+                bloc.setId_machine( session.getRandomMachine().getId() );
                 bloc.insertToTable( conn );
             }
 
