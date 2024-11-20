@@ -1,6 +1,9 @@
 package fabrication;
 
 import bean.ClassMAPTable;
+import cube.bloc.Bloc;
+import utilitaire.UtilDB;
+import utils.EJBGetter;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,6 +17,21 @@ public class Fabrication extends ClassMAPTable {
     // Constr
     public Fabrication() {
         this.setNomTable( "fabrication" );
+    }
+
+    public Fabrication( String idMachine, Date daty, double longueur, double largeur, double hauteur, double prTheoriqueVolumique )
+            throws Exception {
+        this.setNomTable( "fabrication" );
+
+        FabricationEJB fabricationEJB = ( FabricationEJB ) EJBGetter.getFabricationEJB();
+        double prPratiqueVolumique = fabricationEJB.getPrixRevientPratiqueVolumique( daty );
+
+        Bloc bloc = new Bloc( daty, longueur, largeur, hauteur, prTheoriqueVolumique, prPratiqueVolumique );
+        bloc.insertToTable( new UtilDB().GetConn() );
+
+        this.setDaty( daty );
+        this.setId_bloc( bloc.getId() );
+        this.setId_machine( idMachine );
     }
 
     // Getters n Setters

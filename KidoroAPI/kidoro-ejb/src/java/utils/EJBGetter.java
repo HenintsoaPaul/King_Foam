@@ -3,7 +3,6 @@ package utils;
 import cube.bloc.IBlocEJB;
 import cube.usuel.IUsuelEJB;
 import etatStock.IStockEJB;
-import fabrication.IAchatConsommableEJB;
 import fabrication.IFormuleFabricationEJB;
 import teta.ITetaEJB;
 import fabrication.IFabricationEJB;
@@ -47,13 +46,6 @@ public abstract class EJBGetter {
         Context ctx = new InitialContext();
         String jndi = "java:global/kidoro/FormuleFabricationEJB!fabrication.IFormuleFabricationEJB";
         return ( IFormuleFabricationEJB ) ctx.lookup( jndi );
-    }
-
-    public static IAchatConsommableEJB getAchatConsommableEJB()
-            throws NamingException {
-        Context ctx = new InitialContext();
-        String jndi = "java:global/kidoro/AchatConsommableEJB!fabrication.IAchatConsommableEJB";
-        return ( IAchatConsommableEJB ) ctx.lookup( jndi );
     }
 
     public static IStockEJB getStockEJB()
