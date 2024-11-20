@@ -21,6 +21,7 @@ public class Bloc extends Cube implements Serializable {
     double prix_revient_pratique; // Miainga moyenne
     double prix_revient_theorique; // Miainga amn formule
     String id_bloc_mere, id_bloc_base;
+    String id_machine;
 
     // Constr
     public Bloc() {
@@ -107,6 +108,14 @@ public class Bloc extends Cube implements Serializable {
 
     public void setPrix_revient_theorique( double prix_revient_theorique ) {
         this.prix_revient_theorique = prix_revient_theorique;
+    }
+
+    public String getId_machine() {
+        return id_machine;
+    }
+
+    public void setId_machine( String id_machine ) {
+        this.id_machine = id_machine;
     }
 
     /**

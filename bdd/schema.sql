@@ -249,6 +249,13 @@ BEGIN
 END;
 
 -- Tables
+CREATE TABLE machine
+(
+    id  VARCHAR2(50),
+    val VARCHAR2(50) NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE bloc
 (
     id                     VARCHAR2(50),
@@ -260,8 +267,10 @@ CREATE TABLE bloc
     largeur                NUMBER(15, 5) NOT NULL,
     hauteur                NUMBER(15, 5) NOT NULL,
     id_bloc_mere           VARCHAR2(50),
+    id_machine             VARCHAR2(50),
     PRIMARY KEY (id),
-    FOREIGN KEY (id_bloc_mere) REFERENCES bloc (id)
+    FOREIGN KEY (id_bloc_mere) REFERENCES bloc (id),
+    FOREIGN KEY (id_machine) REFERENCES machine (id)
 );
 
 CREATE TABLE transformation
@@ -301,13 +310,6 @@ CREATE TABLE type_mvt_stock
     desce VARCHAR2(50),
     PRIMARY KEY (id),
     UNIQUE (val)
-);
-
-CREATE TABLE machine
-(
-    id  VARCHAR2(50),
-    val VARCHAR2(50) NOT NULL,
-    PRIMARY KEY (id)
 );
 
 CREATE TABLE unite

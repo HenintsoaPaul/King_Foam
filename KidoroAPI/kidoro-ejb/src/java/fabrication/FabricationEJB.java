@@ -89,11 +89,6 @@ public class FabricationEJB implements IFabricationEJB {
                 Bloc bloc = new Bloc( daty, longueur, largeur, hauteur, prTheoriqueVolumique, prPratiqueVolumique );
                 bloc.setId_machine( machines[0] );
                 bloc.insertToTable( conn );
-//                conn.commit();
-
-                Fabrication f = new Fabrication( machines[ 0 ], bloc.getId(), daty );
-                f.insertToTable( conn );
-//                conn.commit();
             }
 
             conn.commit();
