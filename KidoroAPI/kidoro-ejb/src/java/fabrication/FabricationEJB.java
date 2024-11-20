@@ -13,15 +13,6 @@ import java.sql.Date;
 @Stateless
 public class FabricationEJB implements IFabricationEJB {
 
-    private double getAvgPrPratiqueVolumique( Connection conn ) {
-        // todo: get from bdd
-        // ...
-
-        double moyenne = 5.0;
-        double variation = 0.1;
-        return moyenne * variation;
-    }
-
     private double getPrTheoriqueVolumique( Date daty, FormuleFabrication[] formuleFabrications, Connection conn )
             throws Exception {
         try {
@@ -64,21 +55,20 @@ public class FabricationEJB implements IFabricationEJB {
             conn = new UtilDB().GetConn();
             conn.setAutoCommit( false );
 
-            // TODO: get inits
+            // Data Initialization
             FormuleFabrication[] formuleFabrications = session.getFormulesFabrication();
+            double avgPrPratiqueVolumique = session.getMoyennePrPratiqueVolumique();
 
             // TODO: daty random [2022-2024]
             String randomDaty = "2022-10-27";
             Date daty = DateUtil.strToDate( randomDaty );
 
-            // TODO: getPrPratique en general
-            double avgPrPratiqueVolumique = getAvgPrPratiqueVolumique( conn );
+            // TODO: dimensions random
+            double longueur = 5,
+                    largeur = 2,
+                    hauteur = 4;
 
             for ( int i = 0; i < nbFabrication; i++ ) {
-                // TODO: dimensions random
-                double longueur = 5,
-                        largeur = 2,
-                        hauteur = 4;
 
                 double prPratiqueVolumique = avgPrPratiqueVolumique * ( longueur * largeur * hauteur );
                 double prTheoriqueVolumique = getPrTheoriqueVolumique( daty, formuleFabrications, conn );

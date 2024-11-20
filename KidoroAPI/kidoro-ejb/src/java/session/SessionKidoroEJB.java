@@ -1,10 +1,11 @@
 package session;
 
-import cube.bloc.IBlocEJB;
+import bean.CGenUtil;
 import fabrication.FormuleFabrication;
 import fabrication.IFormuleFabricationEJB;
 import fabrication.machine.IMachineEJB;
 import fabrication.machine.Machine;
+import lib.PrPratiqueLib;
 import utils.EJBGetter;
 import utils.RandomUtil;
 
@@ -12,7 +13,6 @@ import javax.ejb.AccessTimeout;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.naming.NamingException;
 import java.io.Serializable;
 
 @Stateful
@@ -22,6 +22,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
 
     FormuleFabrication[] formulesFabrication;
     Machine[] machines;
+    PrPratiqueLib prPratiqueLib;
     double moyennePrPratiqueVolumique = -1;
 
     // Getters n Setters
@@ -35,7 +36,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
         return this.formulesFabrication;
     }
 
-    public void setFormulesFabrication( FormuleFabrication[] formulesFabrication ) {
+    private void setFormulesFabrication( FormuleFabrication[] formulesFabrication ) {
         this.formulesFabrication = formulesFabrication;
     }
 
@@ -48,7 +49,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
         return machines;
     }
 
-    public void setMachines( Machine[] machines ) {
+    private void setMachines( Machine[] machines ) {
         this.machines = machines;
     }
 
@@ -61,11 +62,30 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
     }
 
     @Override
+    public PrPratiqueLib getPrPratiqueLib()
+            throws Exception {
+        if ( prPratiqueLib == null ) {
+            PrPratiqueLib pr = ( PrPratiqueLib ) CGenUtil.rechercher( new PrPratiqueLib(), null, null, "" )[ 0 ];
+            this.setPrPratiqueLib( pr );
+        }
+        return prPratiqueLib;
+    }
+
+    private void setPrPratiqueLib( PrPratiqueLib prPratiqueLib ) {
+        this.prPratiqueLib = prPratiqueLib;
+    }
+
+    @Override
     public double getMoyennePrPratiqueVolumique()
-            throws NamingException {
+            throws Exception {
         if ( moyennePrPratiqueVolumique == -1 ) {
-            IBlocEJB ejb = EJBGetter.getBlocEJB();
+            PrPratiqueLib pr = getPrPratiqueLib();
+            this.setMoyennePrPratiqueVolumique( pr.getPr_pratique_volumique() );
         }
         return moyennePrPratiqueVolumique;
+    }
+
+    private void setMoyennePrPratiqueVolumique( double v ) {
+        this.moyennePrPratiqueVolumique = v;
     }
 }

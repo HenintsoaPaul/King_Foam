@@ -2,9 +2,9 @@ package session;
 
 import fabrication.FormuleFabrication;
 import fabrication.machine.Machine;
+import lib.PrPratiqueLib;
 
 import javax.ejb.Remote;
-import javax.naming.NamingException;
 
 @Remote
 public interface ISessionKidoroEJB {
@@ -15,6 +15,9 @@ public interface ISessionKidoroEJB {
     Machine getRandomMachine()
             throws Exception;
 
+    PrPratiqueLib getPrPratiqueLib()
+            throws Exception;
+
     double getMoyennePrPratiqueVolumique()
-            throws NamingException;
+            throws Exception;
 }
