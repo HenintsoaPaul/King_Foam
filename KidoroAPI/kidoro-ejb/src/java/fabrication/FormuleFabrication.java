@@ -16,10 +16,10 @@ public class FormuleFabrication extends ClassMAPTable implements Serializable {
         this.setNomTable( "formule_fabrication" );
     }
 
-    public double getCoutFabrication( AchatConsommable[] achats, Connection conn )
+    public double getCoutFabrication( AchatConsommable[] achats, double volumeBloc, Connection conn )
             throws Exception {
         double coutFabrication = 0;
-        double qteBesoin = this.getQte();
+        double qteBesoin = this.getQte() * volumeBloc;
         for ( int i = 0; qteBesoin > 0; i++ ) {
             if ( i == achats.length ) {
                 throw new Exception( "Achats en stock insuffisants. Qte reste: " + qteBesoin );

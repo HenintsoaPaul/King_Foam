@@ -7,6 +7,7 @@ public class PrPratiqueLib extends ClassMAPTable {
     double sum_pr_pratique;
     double sum_volume;
     double pr_pratique_volumique;
+    double avg_pr_pratique_volumique;
 
     // Constr
     public PrPratiqueLib() {
@@ -36,6 +37,14 @@ public class PrPratiqueLib extends ClassMAPTable {
 
     public void setPr_pratique_volumique( double pr_pratique_volumique ) {
         this.pr_pratique_volumique = pr_pratique_volumique;
+    }
+
+    public double getAvg_pr_pratique_volumique() {
+        return avg_pr_pratique_volumique;
+    }
+
+    public void setAvg_pr_pratique_volumique( double avg_pr_pratique_volumique ) {
+        this.avg_pr_pratique_volumique = avg_pr_pratique_volumique;
     }
 
     // Overrides

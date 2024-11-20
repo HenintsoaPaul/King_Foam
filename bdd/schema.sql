@@ -474,5 +474,6 @@ where DATY_SORTIE is null;
 CREATE OR REPLACE VIEW pr_pratique_lib AS
 select sum(PRIX_REVIENT_PRATIQUE)                                     as sum_pr_pratique,
        sum(HAUTEUR * LARGEUR * LONGUEUR)                              as sum_volume,
-       sum(PRIX_REVIENT_PRATIQUE) / sum(HAUTEUR * LARGEUR * LONGUEUR) as pr_pratique_volumique
+       sum(PRIX_REVIENT_PRATIQUE) / sum(HAUTEUR * LARGEUR * LONGUEUR) as pr_pratique_volumique,
+       avg(PRIX_REVIENT_PRATIQUE / (HAUTEUR * LARGEUR * LONGUEUR))    as avg_pr_pratique_volumique
 from bloc b;

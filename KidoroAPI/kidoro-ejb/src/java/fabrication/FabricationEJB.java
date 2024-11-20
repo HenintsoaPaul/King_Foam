@@ -13,7 +13,7 @@ import java.sql.Date;
 @Stateless
 public class FabricationEJB implements IFabricationEJB {
 
-    private double getPrTheoriqueVolumique( Date daty, FormuleFabrication[] formuleFabrications, Connection conn )
+    private double getPrTheoriqueVolumique( Date daty, FormuleFabrication[] formuleFabrications, double volumeBloc, Connection conn )
             throws Exception {
         try {
             conn.setAutoCommit( false );
@@ -25,7 +25,7 @@ public class FabricationEJB implements IFabricationEJB {
                 if ( achats == null ) {
                     throw new Exception( "Aucun stock restant pour le consommable \"" + idConsommable + "\"" );
                 }
-                prPratique += ffConsommable.getCoutFabrication( achats, conn );
+                prPratique += ffConsommable.getCoutFabrication( achats, volumeBloc, conn );
             }
 
             return prPratique;
@@ -63,20 +63,21 @@ public class FabricationEJB implements IFabricationEJB {
             String randomDaty = "2022-10-27";
             Date daty = DateUtil.strToDate( randomDaty );
 
-            // TODO: dimensions random
-            double longueur = 5,
-                    largeur = 2,
-                    hauteur = 4;
 
             for ( int i = 0; i < nbFabrication; i++ ) {
+                // TODO: dimensions random
+                double longueur = 5,
+                        largeur = 2,
+                        hauteur = 4;
+                double volumeBloc = longueur * largeur * hauteur;
 
-                double prPratiqueVolumique = avgPrPratiqueVolumique * ( longueur * largeur * hauteur );
-                double prTheoriqueVolumique = getPrTheoriqueVolumique( daty, formuleFabrications, conn );
+                double prPratique = avgPrPratiqueVolumique * volumeBloc;
+                double prTheorique = getPrTheoriqueVolumique( daty, formuleFabrications, volumeBloc, conn );
 
                 System.out.println( "Fabrication no: " + ( i + 1 ) );
-                System.out.println( "prt: " + prPratiqueVolumique + " | th: " + prTheoriqueVolumique );
+                System.out.println( "prt: " + prPratique + " | th: " + prTheorique );
 
-                Bloc bloc = new Bloc( daty, longueur, largeur, hauteur, prTheoriqueVolumique, prPratiqueVolumique );
+                Bloc bloc = new Bloc( daty, longueur, largeur, hauteur, prTheorique, prPratique );
                 bloc.setId_machine( session.getRandomMachine().getId() );
                 bloc.insertToTable( conn );
             }

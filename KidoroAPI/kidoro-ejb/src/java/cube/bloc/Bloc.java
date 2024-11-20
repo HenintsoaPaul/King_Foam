@@ -28,7 +28,7 @@ public class Bloc extends Cube implements Serializable {
         this.setNomTable( "bloc" );
     }
 
-    public Bloc( Date daty, double longueur, double largeur, double hauteur, double prTheoriqueVolumique, double prPratiqueVolumique ) {
+    public Bloc( Date daty, double longueur, double largeur, double hauteur, double prTheorique, double prPratique ) {
         this.setNomTable( "bloc" );
 
         this.setDaty_entree( daty );
@@ -36,9 +36,8 @@ public class Bloc extends Cube implements Serializable {
         this.setLargeur( largeur );
         this.setHauteur( hauteur );
 
-        double volume = this.getVolume();
-        this.setPrix_revient_theorique( prTheoriqueVolumique * volume );
-        this.setPrix_revient_pratique( prPratiqueVolumique * volume );
+        this.setPrix_revient_theorique( prTheorique );
+        this.setPrix_revient_pratique( prPratique );
     }
 
     public static Bloc creerBlocFilleFromMyTransfo( MyTransfo myTransfo, double prixRevientVolumique )
