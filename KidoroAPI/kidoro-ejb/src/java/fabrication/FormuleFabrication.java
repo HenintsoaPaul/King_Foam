@@ -15,6 +15,33 @@ public class FormuleFabrication extends ClassMAPTable {
         this.setNomTable( "formule_fabrication" );
     }
 
+    public double getCoutFabrication( AchatConsommable[] achats, Connection conn )
+            throws Exception {
+        double coutFabrication = 0;
+        double qteBesoin = this.getQte();
+        for ( int i = 0; qteBesoin > 0; i++ ) {
+            if ( i == achats.length ) {
+                throw new Exception( "Achats en stock insuffisants" );
+            }
+            AchatConsommable achat = achats[ i ];
+            double qteMiala, qteReste, qteDispo = achat.getReste();
+            if ( qteBesoin >= qteDispo ) {
+                qteMiala = qteDispo;
+                qteReste = 0;
+            } else {
+                qteMiala = qteBesoin;
+                qteReste = qteDispo - qteBesoin;
+            }
+            // Utilisation du miala
+            qteBesoin -= qteMiala;
+            coutFabrication += qteMiala * achat.getPu();
+            // Update reste en stock
+            achat.setReste( qteReste );
+            achat.insertToTable( conn );
+        }
+        return coutFabrication;
+    }
+
     // Getters n Setters
     public String getId() {
         return id;
