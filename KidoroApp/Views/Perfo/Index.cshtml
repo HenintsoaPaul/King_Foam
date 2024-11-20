@@ -12,9 +12,10 @@
             <tr>
                 <th>Machine</th>
                 <th>Volume Produit</th>
-                <th>PR Theorique</th>
-                <th>PR Pratique</th>
+                <th>PR Theorique (Ar)</th>
+                <th>PR Pratique (Ar)</th>
                 <th>Diff</th>
+                <th>Performance (%)</th>
             </tr>
         </thead>
 
@@ -22,11 +23,12 @@
             @foreach (var perfo in Model)
             {
                 <tr>
-                    <td>@perfo.machine</td>
-                    <td>@(String.Format("{0:N2}", perfo.volume_total))</td>
-                    <td>@(String.Format("{0:N2}", perfo.pr_theorique))</td>
-                    <td>@(String.Format("{0:N2}", perfo.pr_pratique))</td>
-                    <td>@(String.Format("{0:N2}", perfo.diff))</td>
+                    <td>@perfo.id_machine</td>
+                    <td>@(String.Format("{0:N2}", perfo.vol_total))</td>
+                    <td>@(String.Format("{0:N2}", perfo.sum_pr_theorique))</td>
+                    <td>@(String.Format("{0:N2}", perfo.sum_pr_pratique))</td>
+                    <td>@(String.Format("{0:N2}", perfo.diff_th_reel))</td>
+                    <td>@(String.Format("{0:N2}", perfo.GetPerformance()))</td>
                 </tr>
             }
         </tbody>

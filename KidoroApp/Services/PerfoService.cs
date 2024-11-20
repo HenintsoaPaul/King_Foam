@@ -8,20 +8,20 @@ public class PerfoService(HttpClient httpClient)
 
     public async Task<List<Perfo>> GetPerfo()
     {
-        return await GetMockPerfo();
-        // const string requestUri = BaseUrl + "/stock/perfo";
-        // var response = await httpClient.GetAsync(requestUri);
-        // if (!response.IsSuccessStatusCode) return [];
-        // var result = await response.Content.ReadFromJsonAsync<List<Perfo>>();
-        // return result ?? [];
+        //return await GetMockPerfo();
+        const string requestUri = BaseUrl + "/perfo";
+        var response = await httpClient.GetAsync(requestUri);
+        if (!response.IsSuccessStatusCode) return [];
+        var result = await response.Content.ReadFromJsonAsync<List<Perfo>>();
+        return result ?? [];
     }
     public Task<List<Perfo>> GetMockPerfo()
     {
         var mockData = new List<Perfo>
     {
-        new() { machine = "Machine1", volume_total = 100, pr_theorique = 50, pr_pratique = 45, diff = 5 },
-        new() { machine = "Machine2", volume_total = 200, pr_theorique = 100, pr_pratique = 90, diff = 10 },
-        new() { machine = "Machine3", volume_total = 300, pr_theorique = 150, pr_pratique = 140, diff = 10 }
+        new() { id_machine = "Machine1", vol_total = 100, sum_pr_theorique = 50, sum_pr_pratique = 45, diff_th_reel = 5 },
+        new() { id_machine = "Machine2", vol_total = 200, sum_pr_theorique = 100, sum_pr_pratique = 90, diff_th_reel = 10 },
+        new() { id_machine = "Machine3", vol_total = 300, sum_pr_theorique = 150, sum_pr_pratique = 140, diff_th_reel = 10 }
     };
         return Task.FromResult(mockData);
     }

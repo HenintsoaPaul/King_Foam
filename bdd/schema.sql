@@ -488,4 +488,4 @@ select ID_MACHINE,
 from bloc b
 where b.ID_MACHINE is not null
 group by ID_MACHINE
-order by performance;
+order by performance desc;
