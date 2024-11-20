@@ -5,7 +5,7 @@ import fabrication.FormuleFabrication;
 import fabrication.IFormuleFabricationEJB;
 import fabrication.machine.IMachineEJB;
 import fabrication.machine.Machine;
-import lib.PrPratiqueLib;
+import fabrication.lib.PrPratiqueLib;
 import utils.EJBGetter;
 import utils.RandomUtil;
 

@@ -477,3 +477,15 @@ select sum(PRIX_REVIENT_PRATIQUE)                                     as sum_pr_
        sum(PRIX_REVIENT_PRATIQUE) / sum(HAUTEUR * LARGEUR * LONGUEUR) as pr_pratique_volumique,
        avg(PRIX_REVIENT_PRATIQUE / (HAUTEUR * LARGEUR * LONGUEUR))    as avg_pr_pratique_volumique
 from bloc b;
+
+CREATE OR REPLACE VIEW perfo_lib AS
+select ID_MACHINE,
+       sum(LONGUEUR * LARGEUR * HAUTEUR)                                                                as vol_total,
+       sum(PRIX_REVIENT_PRATIQUE)                                                                       as sum_pr_pratique,
+       sum(PRIX_REVIENT_THEORIQUE)                                                                      as sum_pr_theorique,
+       sum(PRIX_REVIENT_THEORIQUE) - sum(PRIX_REVIENT_PRATIQUE)                                         as diff_th_reel,
+       ((sum(PRIX_REVIENT_THEORIQUE) - sum(PRIX_REVIENT_PRATIQUE)) / sum(PRIX_REVIENT_THEORIQUE)) * 100 as performance
+from bloc b
+where b.ID_MACHINE is not null
+group by ID_MACHINE
+order by performance;

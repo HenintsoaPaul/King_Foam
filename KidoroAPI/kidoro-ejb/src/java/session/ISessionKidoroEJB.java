@@ -2,7 +2,7 @@ package session;
 
 import fabrication.FormuleFabrication;
 import fabrication.machine.Machine;
-import lib.PrPratiqueLib;
+import fabrication.lib.PrPratiqueLib;
 
 import javax.ejb.Remote;
 

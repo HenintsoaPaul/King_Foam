@@ -5,6 +5,7 @@ import cube.usuel.IUsuelEJB;
 import etatStock.IStockEJB;
 import fabrication.IAchatConsommableEJB;
 import fabrication.IFormuleFabricationEJB;
+import fabrication.lib.IPerfoLibEJB;
 import fabrication.machine.IMachineEJB;
 import session.ISessionKidoroEJB;
 import teta.ITetaEJB;
@@ -77,5 +78,12 @@ public abstract class EJBGetter {
         Context ctx = new InitialContext();
         String jndi = "java:global/kidoro/MachineEJB!fabrication.machine.IMachineEJB";
         return ( IMachineEJB ) ctx.lookup( jndi );
+    }
+
+    public static IPerfoLibEJB getPerfoLibEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/PerfoLibEJB!fabrication.lib.IPerfoLibEJB";
+        return ( IPerfoLibEJB ) ctx.lookup( jndi );
     }
 }

@@ -1,4 +1,4 @@
-package lib;
+package fabrication.lib;
 
 import bean.ClassMAPTable;
 
