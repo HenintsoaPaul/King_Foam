@@ -4,8 +4,14 @@ CREATE SEQUENCE seq_transformation nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_usuel nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_teta nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_type_mvt_stock nomaxvalue increment by 1 start with 1;
+CREATE SEQUENCE seq_machine nomaxvalue increment by 1 start with 1;
+CREATE SEQUENCE seq_unite nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_mvt_stock nomaxvalue increment by 1 start with 1;
 CREATE SEQUENCE seq_mvt_stock_detail nomaxvalue increment by 1 start with 1;
+CREATE SEQUENCE seq_fabrication nomaxvalue increment by 1 start with 1;
+CREATE SEQUENCE seq_consommable nomaxvalue increment by 1 start with 1;
+CREATE SEQUENCE seq_formule_fabrication nomaxvalue increment by 1 start with 1;
+CREATE SEQUENCE seq_achat_consommable nomaxvalue increment by 1 start with 1;
 
 -- Str Sequences
 -- --bloc
@@ -98,6 +104,42 @@ BEGIN
     RETURN retour;
 END;
 
+-- --machine
+CREATE OR REPLACE FUNCTION seq_machine_format(p_num NUMBER) RETURN VARCHAR2 IS
+    v_result VARCHAR2(255);
+BEGIN
+    v_result := 'MACH' || LPAD(TO_CHAR(p_num), 4, '0');
+    RETURN v_result;
+END;
+
+CREATE FUNCTION get_seq_machine
+    RETURN NUMBER
+    IS
+    retour NUMBER;
+BEGIN
+    SELECT seq_machine.NEXTVAL INTO retour FROM DUAL;
+
+    RETURN retour;
+END;
+
+-- --unite
+CREATE OR REPLACE FUNCTION seq_unite_format(p_num NUMBER) RETURN VARCHAR2 IS
+    v_result VARCHAR2(255);
+BEGIN
+    v_result := 'UNIT' || LPAD(TO_CHAR(p_num), 4, '0');
+    RETURN v_result;
+END;
+
+CREATE FUNCTION get_seq_unite
+    RETURN NUMBER
+    IS
+    retour NUMBER;
+BEGIN
+    SELECT seq_unite.NEXTVAL INTO retour FROM DUAL;
+
+    RETURN retour;
+END;
+
 -- --mvt_stock
 CREATE OR REPLACE FUNCTION seq_mvt_stock_format(p_num NUMBER) RETURN VARCHAR2 IS
     v_result VARCHAR2(255);
@@ -134,18 +176,90 @@ BEGIN
     RETURN retour;
 END;
 
+-- --fabrication
+CREATE OR REPLACE FUNCTION seq_fabrication_format(p_num NUMBER) RETURN VARCHAR2 IS
+    v_result VARCHAR2(255);
+BEGIN
+    v_result := 'FABR' || LPAD(TO_CHAR(p_num), 4, '0');
+    RETURN v_result;
+END;
+
+CREATE FUNCTION get_seq_fabrication
+    RETURN NUMBER
+    IS
+    retour NUMBER;
+BEGIN
+    SELECT seq_fabrication.NEXTVAL INTO retour FROM DUAL;
+
+    RETURN retour;
+END;
+
+-- --consommable
+CREATE OR REPLACE FUNCTION seq_consommable_format(p_num NUMBER) RETURN VARCHAR2 IS
+    v_result VARCHAR2(255);
+BEGIN
+    v_result := 'CONS' || LPAD(TO_CHAR(p_num), 4, '0');
+    RETURN v_result;
+END;
+
+CREATE FUNCTION get_seq_consommable
+    RETURN NUMBER
+    IS
+    retour NUMBER;
+BEGIN
+    SELECT seq_consommable.NEXTVAL INTO retour FROM DUAL;
+
+    RETURN retour;
+END;
+
+-- --achat_consommable
+CREATE OR REPLACE FUNCTION seq_achat_consommable_format(p_num NUMBER) RETURN VARCHAR2 IS
+    v_result VARCHAR2(255);
+BEGIN
+    v_result := 'ACHA' || LPAD(TO_CHAR(p_num), 4, '0');
+    RETURN v_result;
+END;
+
+CREATE FUNCTION get_seq_achat_consommable
+    RETURN NUMBER
+    IS
+    retour NUMBER;
+BEGIN
+    SELECT seq_achat_consommable.NEXTVAL INTO retour FROM DUAL;
+
+    RETURN retour;
+END;
+
+-- --formule_fabrication
+CREATE OR REPLACE FUNCTION seq_formule_fabrication_format(p_num NUMBER) RETURN VARCHAR2 IS
+    v_result VARCHAR2(255);
+BEGIN
+    v_result := 'FORM' || LPAD(TO_CHAR(p_num), 4, '0');
+    RETURN v_result;
+END;
+
+CREATE FUNCTION get_seq_formule_fabrication
+    RETURN NUMBER
+    IS
+    retour NUMBER;
+BEGIN
+    SELECT seq_formule_fabrication.NEXTVAL INTO retour FROM DUAL;
+
+    RETURN retour;
+END;
+
 -- Tables
 CREATE TABLE bloc
 (
-    id           VARCHAR2(50),
-    daty_entree  DATE          NOT NULL,
-    daty_sortie  DATE,
-    prix_revient NUMBER(15, 5) NOT NULL,
-    longueur     NUMBER(15, 5) NOT NULL,
-    largeur      NUMBER(15, 5) NOT NULL,
-    hauteur      NUMBER(15, 5) NOT NULL,
-    id_bloc_mere VARCHAR2(50),
-    id_bloc_base VARCHAR2(50),
+    id                     VARCHAR2(50),
+    daty_entree            DATE          NOT NULL,
+    daty_sortie            DATE,
+    prix_revient_theorique NUMBER(15, 5) NOT NULL,
+    prix_revient_pratique  NUMBER(15, 5) NOT NULL,
+    longueur               NUMBER(15, 5) NOT NULL,
+    largeur                NUMBER(15, 5) NOT NULL,
+    hauteur                NUMBER(15, 5) NOT NULL,
+    id_bloc_mere           VARCHAR2(50),
     PRIMARY KEY (id),
     FOREIGN KEY (id_bloc_mere) REFERENCES bloc (id)
 );
@@ -189,6 +303,22 @@ CREATE TABLE type_mvt_stock
     UNIQUE (val)
 );
 
+CREATE TABLE machine
+(
+    id  VARCHAR2(50),
+    val VARCHAR2(50) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE unite
+(
+    id      VARCHAR2(50),
+    val     VARCHAR2(50) NOT NULL,
+    symbole VARCHAR2(50) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (val)
+);
+
 CREATE TABLE mvt_stock
 (
     id                     VARCHAR2(50),
@@ -213,6 +343,47 @@ CREATE TABLE mvt_stock_detail
     PRIMARY KEY (id),
     FOREIGN KEY (id_usuel) REFERENCES usuel (id),
     FOREIGN KEY (id_mvt_stock) REFERENCES mvt_stock (id)
+);
+
+CREATE TABLE fabrication
+(
+    id         VARCHAR2(50),
+    daty       DATE         NOT NULL,
+    id_machine VARCHAR2(50) NOT NULL,
+    id_bloc    VARCHAR2(50) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_machine) REFERENCES machine (id),
+    FOREIGN KEY (id_bloc) REFERENCES bloc (id)
+);
+
+CREATE TABLE consommable
+(
+    id       VARCHAR2(50),
+    val      VARCHAR2(50) NOT NULL,
+    id_unite VARCHAR2(50) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_unite) REFERENCES unite (id)
+);
+
+CREATE TABLE formule_fabrication
+(
+    id             VARCHAR2(50),
+    qte            NUMBER(15, 5) NOT NULL,
+    id_consommable VARCHAR2(50)  NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_consommable) REFERENCES consommable (id)
+);
+
+CREATE TABLE achat_consommable
+(
+    id             VARCHAR2(50),
+    daty           DATE         NOT NULL,
+    qte            NUMBER(15, 5),
+    reste          NUMBER(15, 5),
+    pu             NUMBER(15, 5),
+    id_consommable VARCHAR2(50) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_consommable) REFERENCES consommable (id)
 );
 
 -- Views
@@ -252,13 +423,6 @@ select ID_USUEL,
 from MVT_STOCK_DETAIL_LIB
 group by ID_USUEL;
 
--- CREATE OR REPLACE VIEW maxRapport AS
--- select *
--- from (SELECT *
---       FROM USUEL_LIB
---       ORDER BY rapport DESC)
--- where ROWNUM <= 1;
-
 CREATE OR REPLACE VIEW minVolume AS
 select *
 from (SELECT *
@@ -267,13 +431,13 @@ from (SELECT *
 where ROWNUM <= 1;
 
 CREATE OR REPLACE VIEW bloc_stock_lib AS
-select b.id           as id_bloc,
-       u.id           as id_usuel,
-       u.prix_vente   as pv_usuel,
+select b.id                    as id_bloc,
+       u.id                    as id_usuel,
+       u.prix_vente            as pv_usuel,
        b.vol_bloc,
-       u.volume       as vol_usuel,
+       u.volume                as vol_usuel,
        u.rapport,
-       b.prix_revient as pr_bloc
+       b.prix_revient_pratique as pr_bloc
 from bloc_lib b
          inner join USUEL_LIB u on u.VOLUME <= b.VOL_BLOC
 where b.DATY_SORTIE is null;
@@ -299,7 +463,7 @@ select b.id                                                                     
        b.LONGUEUR * b.LARGEUR * b.HAUTEUR                                                    as vol_block,
        minVolume.VOLUME                                                                      as vol_usuel,
        TRUNC((b.LONGUEUR * b.LARGEUR * b.HAUTEUR) / minVolume.VOLUME)                        as qte_produit,
-       b.PRIX_REVIENT                                                                        as pr_bloc,
+       b.prix_revient_pratique                                                               as pr_bloc,
        TRUNC((b.LONGUEUR * b.LARGEUR * b.HAUTEUR) / minVolume.VOLUME) * minVolume.PRIX_VENTE as pv_bloc
 from bloc b
          cross join minVolume
