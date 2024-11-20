@@ -1,22 +1,31 @@
 package session;
 
 import fabrication.FormuleFabrication;
-import fabrication.FormuleFabricationEJB;
+import fabrication.IFormuleFabricationEJB;
 import utils.EJBGetter;
 
+import javax.ejb.AccessTimeout;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 @Stateful
-public class SessionKidoroEJB {
+@AccessTimeout( 10000L )
+@TransactionAttribute( TransactionAttributeType.SUPPORTS )
+public class SessionKidoroEJB implements ISessionKidoroEJB {
 
     FormuleFabrication[] formulesFabrication;
 
-    FormuleFabrication[] getFormulesFabrication()
+    public FormuleFabrication[] getFormulesFabrication()
             throws Exception {
         if ( this.formulesFabrication == null ) {
-            FormuleFabricationEJB ejb = ( FormuleFabricationEJB ) EJBGetter.getFormuleFabricationEJB();
-            this.formulesFabrication = ejb.getFormulesFabrication();
+            IFormuleFabricationEJB ejb = EJBGetter.getFormuleFabricationEJB();
+            this.setFormulesFabrication( ejb.getFormulesFabrication() );
         }
         return this.formulesFabrication;
+    }
+
+    public void setFormulesFabrication( FormuleFabrication[] formulesFabrication ) {
+        this.formulesFabrication = formulesFabrication;
     }
 }
