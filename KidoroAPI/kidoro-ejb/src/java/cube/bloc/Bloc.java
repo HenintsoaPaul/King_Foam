@@ -18,7 +18,8 @@ public class Bloc extends Cube implements Serializable {
     String id;
     Date daty_entree;
     Date daty_sortie;
-    double prix_revient_theorique, prix_revient_pratique;
+    double prix_revient_pratique; // Miainga moyenne
+    double prix_revient_theorique; // Miainga amn formule
     String id_bloc_mere, id_bloc_base;
 
     // Constr
@@ -26,12 +27,23 @@ public class Bloc extends Cube implements Serializable {
         this.setNomTable( "bloc" );
     }
 
+    public Bloc( Date daty, double longueur, double largeur, double hauteur, double prTheoriqueVolumique, double prPratiqueVolumique ) {
+        this.setDaty_entree( daty );
+        this.setLongueur( longueur );
+        this.setLargeur( largeur );
+        this.setHauteur( hauteur );
+
+        double volume = this.getVolume();
+        this.setPrix_revient_theorique( prTheoriqueVolumique * volume );
+        this.setPrix_revient_pratique( prPratiqueVolumique * volume );
+    }
+
     public static Bloc creerBlocFilleFromMyTransfo( MyTransfo myTransfo, double prixRevientVolumique )
             throws ParseException {
         Bloc bFille = new Bloc();
         bFille.setDaty_entree( DateUtil.strToDate( myTransfo.getDaty() ) );
         bFille.setId_bloc_mere( myTransfo.getId_bloc() );
-        bFille.setPrix_revientFromPrv( prixRevientVolumique );
+        bFille.setPrPratiqueFromVolume( prixRevientVolumique );
 
         double L = myTransfo.getLongueur(),
                 l = myTransfo.getLargeur(),
@@ -50,7 +62,7 @@ public class Bloc extends Cube implements Serializable {
     public void controler()
             throws Exception {
         if ( this.getVolume() <= 0 ) throw new Exception( "Volume must be > 0" );
-        if ( this.getPrix_revient_theorique() <= 0 ) throw new Exception( "Prix_revient_theorique must be > 0" );
+        if ( this.getPrix_revient_pratique() <= 0 ) throw new Exception( "Prix_revient_pratique must be > 0" );
     }
 
     // Getters n Setters
@@ -78,31 +90,35 @@ public class Bloc extends Cube implements Serializable {
         this.daty_entree = daty_entree;
     }
 
-    public double getPrix_revient_theorique() {
-        return prix_revient_theorique;
-    }
-
-    public void setPrix_revient_theorique( double prix_revient_theorique ) {
-        if ( prix_revient_theorique <= 0 ) throw new IllegalArgumentException( "prixRevient must be > 0" );
-        this.prix_revient_theorique = prix_revient_theorique;
-    }
-
     public double getPrix_revient_pratique() {
         return prix_revient_pratique;
     }
 
     public void setPrix_revient_pratique( double prix_revient_pratique ) {
+        if ( prix_revient_pratique <= 0 ) throw new IllegalArgumentException( "prPratique must be > 0" );
         this.prix_revient_pratique = prix_revient_pratique;
+    }
+
+    public double getPrix_revient_theorique() {
+        return prix_revient_theorique;
+    }
+
+    public void setPrix_revient_theorique( double prix_revient_theorique ) {
+        this.prix_revient_theorique = prix_revient_theorique;
     }
 
     /**
      * Set prixRevient a partir de prixRevientVolumique
-     * @param prixRevientVolumique
+     * @param prVolumique
      */
-    public void setPrix_revientFromPrv( double prixRevientVolumique ) {
-        if ( prixRevientVolumique <= 0 ) throw new IllegalArgumentException( "prixRevientVolumique must be > 0" );
-        System.out.println("pr_vol: " + prixRevientVolumique + " | vol: " + this.getVolume());
-        this.prix_revient_theorique = this.getVolume() * prixRevientVolumique;
+    public void setPrPratiqueFromVolume( double prVolumique ) {
+        if ( prVolumique <= 0 ) throw new IllegalArgumentException( "prixRevientVolumique must be > 0" );
+        this.prix_revient_pratique = this.getVolume() * prVolumique;
+    }
+
+    public void setPrTheoriqueFromVolume( double prVolumique ) {
+        if ( prVolumique <= 0 ) throw new IllegalArgumentException( "prixRevientVolumique must be > 0" );
+        this.prix_revient_theorique = this.getVolume() * prVolumique;
     }
 
     public String getId_bloc_mere() {
@@ -123,7 +139,7 @@ public class Bloc extends Cube implements Serializable {
 
     // Advanced Getters
     public double getPrixRevientVolumique() {
-        return this.getPrix_revient_theorique() / this.getVolume();
+        return this.getPrix_revient_pratique() / this.getVolume();
     }
 
     // Overrides
@@ -195,8 +211,8 @@ public class Bloc extends Cube implements Serializable {
 
             if ( b.getId_bloc_mere() != null ) throw new Exception( "N'est pas une mere final" );
 
-            double proportion = newPrix / b.getPrix_revient_theorique();
-            b.setPrix_revient_theorique( newPrix );
+            double proportion = newPrix / b.getPrix_revient_pratique();
+            b.setPrix_revient_pratique( newPrix );
             b.updateToTable( conn );
 
             if ( b.getDaty_sortie() != null ) b.updateUsuels( conn );
@@ -217,10 +233,10 @@ public class Bloc extends Cube implements Serializable {
 
     public void updatePrixRevientFille( Connection conn, double proportion )
             throws Exception {
-        this.setPrix_revient_theorique( this.getPrix_revient_theorique() * proportion );
+        this.setPrix_revient_pratique( this.getPrix_revient_pratique() * proportion );
         this.updateToTable( conn );
 
-        if ( this.getDaty_sortie() != null )  this.updateUsuels( conn );
+        if ( this.getDaty_sortie() != null ) this.updateUsuels( conn );
 
         Bloc fille = getFille( conn );
         if ( fille == null ) {

@@ -22,7 +22,7 @@ public class MyBloc {
         bloc.setLongueur( this.L );
         bloc.setLargeur( this.l );
         bloc.setHauteur( this.h );
-        bloc.setPrix_revient_theorique( this.prixRevient );
+        bloc.setPrix_revient_pratique( this.prixRevient );
         bloc.setDaty_entree( DateUtil.strToDate( this.daty ) );
 
         return bloc;
@@ -30,7 +30,7 @@ public class MyBloc {
 
     public Bloc creerBlocUpdate() {
         Bloc bloc = new Bloc();
-        bloc.setPrix_revient_theorique( this.prixRevient );
+        bloc.setPrix_revient_pratique( this.prixRevient );
         bloc.setId( this.idBloc );
 
         return bloc;
