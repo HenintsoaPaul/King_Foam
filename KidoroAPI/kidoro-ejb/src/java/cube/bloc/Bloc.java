@@ -28,6 +28,8 @@ public class Bloc extends Cube implements Serializable {
     }
 
     public Bloc( Date daty, double longueur, double largeur, double hauteur, double prTheoriqueVolumique, double prPratiqueVolumique ) {
+        this.setNomTable( "bloc" );
+
         this.setDaty_entree( daty );
         this.setLongueur( longueur );
         this.setLargeur( largeur );

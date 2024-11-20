@@ -2,9 +2,10 @@ package fabrication;
 
 import bean.ClassMAPTable;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
-public class FormuleFabrication extends ClassMAPTable {
+public class FormuleFabrication extends ClassMAPTable implements Serializable {
 
     String id;
     double qte;
@@ -21,7 +22,7 @@ public class FormuleFabrication extends ClassMAPTable {
         double qteBesoin = this.getQte();
         for ( int i = 0; qteBesoin > 0; i++ ) {
             if ( i == achats.length ) {
-                throw new Exception( "Achats en stock insuffisants" );
+                throw new Exception( "Achats en stock insuffisants. Qte reste: " + qteBesoin );
             }
             AchatConsommable achat = achats[ i ];
             double qteMiala, qteReste, qteDispo = achat.getReste();
@@ -37,7 +38,7 @@ public class FormuleFabrication extends ClassMAPTable {
             coutFabrication += qteMiala * achat.getPu();
             // Update reste en stock
             achat.setReste( qteReste );
-            achat.insertToTable( conn );
+            achat.updateToTable( conn );
         }
         return coutFabrication;
     }
