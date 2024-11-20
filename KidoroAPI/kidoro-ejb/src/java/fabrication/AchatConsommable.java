@@ -1,9 +1,11 @@
 package fabrication;
 
 import bean.ClassMAPTable;
+import utils.DateUtil;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.text.ParseException;
 
 public class AchatConsommable extends ClassMAPTable {
 
@@ -15,6 +17,17 @@ public class AchatConsommable extends ClassMAPTable {
     // Constr
     public AchatConsommable() {
         this.setNomTable( "achat_consommable" );
+    }
+
+    public AchatConsommable( String[] rowCsv )
+            throws ParseException {
+        this.setNomTable( "achat_consommable" );
+
+        this.setDaty( DateUtil.strToDate( rowCsv[ 0 ] ) );
+        this.setQte( Double.parseDouble( rowCsv[ 1 ] ) );
+        this.setReste( Double.parseDouble( rowCsv[ 2 ] ) );
+        this.setPu( Double.parseDouble( rowCsv[ 3 ] ) );
+        this.setId_consommable( rowCsv[ 4 ] );
     }
 
     // Getters n Setters

@@ -12,7 +12,14 @@ public class Consommable extends ClassMAPTable {
 
     // Constr
     public Consommable() {
-        this.setNomTable( "unite" );
+        this.setNomTable( "consommable" );
+    }
+
+    public Consommable( String[] rowCsv ) {
+        this.setNomTable( "consommable" );
+
+        this.setVal( Double.parseDouble( rowCsv[ 0 ] ) );
+        this.setId_unite( rowCsv[ 1 ] );
     }
 
     // Getters n Setters
