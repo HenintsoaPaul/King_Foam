@@ -100,6 +100,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
             throws Exception {
         String apresWhere = " order by daty_entree";
         this.blocs = ( Bloc[] ) CGenUtil.rechercher( new Bloc(), null, null, apresWhere );
+        System.out.println( "Azo ny blocs rehetra (len: " + this.blocs.length + ")" );
     }
 
     private void setMoyennePrPratiqueVolumique( double v ) {

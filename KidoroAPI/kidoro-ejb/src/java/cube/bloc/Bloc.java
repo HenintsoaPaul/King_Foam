@@ -40,14 +40,6 @@ public class Bloc extends Cube implements Serializable {
         this.setPrix_revient_pratique( prPratique );
     }
 
-    public int updatePrixRevient( double prTheorique, double prPratique, Connection conn )
-            throws Exception {
-        this.setPrix_revient_theorique( prTheorique );
-        this.setPrix_revient_pratique( prPratique );
-
-        return this.updateToTable( conn );
-    }
-
     public static Bloc creerBlocFilleFromMyTransfo( MyTransfo myTransfo, double prixRevientVolumique )
             throws ParseException {
         Bloc bFille = new Bloc();
@@ -105,7 +97,7 @@ public class Bloc extends Cube implements Serializable {
     }
 
     public void setPrix_revient_pratique( double prix_revient_pratique ) {
-        if ( prix_revient_pratique <= 0 ) throw new IllegalArgumentException( "prPratique must be > 0" );
+//        if ( prix_revient_pratique <= 0 ) throw new IllegalArgumentException( "prPratique must be > 0" );
         this.prix_revient_pratique = prix_revient_pratique;
     }
 

@@ -4,11 +4,11 @@ import bean.CGenUtil;
 import cube.bloc.Bloc;
 import session.ISessionKidoroEJB;
 import utilitaire.UtilDB;
-import utils.DateUtil;
 
 import javax.ejb.Stateless;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 
 @Stateless
 public class FabricationEJB implements IFabricationEJB {
@@ -47,49 +47,29 @@ public class FabricationEJB implements IFabricationEJB {
     }
 
     // ------------------------------------
-    @Override
-    public void doFabrications( int nbFabrication, ISessionKidoroEJB session )
+    private void optim( ISessionKidoroEJB session, Connection conn )
             throws Exception {
-        Connection conn = null;
-        try {
-            conn = new UtilDB().GetConn();
-            conn.setAutoCommit( false );
+        PreparedStatement pstmt = conn.prepareStatement( "UPDATE bloc SET prix_revient_theorique = ? WHERE id = ?" );
+        FormuleFabrication[] formuleFabrications = session.getFormulesFabrication();
+        int batchSize = 20000, anatyBatch = 0;
 
-            // Data Initialization
-            FormuleFabrication[] formuleFabrications = session.getFormulesFabrication();
-            double avgPrPratiqueVolumique = session.getMoyennePrPratiqueVolumique();
+        for ( Bloc bloc : session.getBlocs() ) {
+            double prTheorique = getPrTheoriqueVolumique( bloc.getDaty_entree(), formuleFabrications, bloc.getVolume(), conn );
 
-            // TODO: daty random [2022-2024]
-            String randomDaty = "2022-10-27";
-            Date daty = DateUtil.strToDate( randomDaty );
+            pstmt.setDouble( 1, prTheorique );
+            pstmt.setString( 2, bloc.getId() );
+            pstmt.addBatch();
+            anatyBatch++;
 
-
-            for ( int i = 0; i < nbFabrication; i++ ) {
-                // TODO: dimensions random
-                double longueur = 5,
-                        largeur = 2,
-                        hauteur = 4;
-                double volumeBloc = longueur * largeur * hauteur;
-
-                double prPratique = avgPrPratiqueVolumique * volumeBloc;
-                double prTheorique = getPrTheoriqueVolumique( daty, formuleFabrications, volumeBloc, conn );
-
-                System.out.println( "Fabrication no: " + ( i + 1 ) );
-                System.out.println( "prt: " + prPratique + " | th: " + prTheorique );
-
-                Bloc bloc = new Bloc( daty, longueur, largeur, hauteur, prTheorique, prPratique );
-                bloc.setId_machine( session.getRandomMachine().getId() );
-                bloc.insertToTable( conn );
+            if ( anatyBatch == batchSize ) {
+                pstmt.executeBatch();
+                pstmt.clearBatch();
+                anatyBatch = 0;
             }
-
-            conn.commit();
-            conn.close();
-        } catch ( Exception e ) {
-            if ( conn != null ) conn.rollback();
-            e.printStackTrace();
-            throw e;
-        } finally {
-            if ( conn != null ) conn.close();
+        }
+        if ( anatyBatch > 0 ) {
+            pstmt.executeBatch();
+            pstmt.clearBatch();
         }
     }
 
@@ -101,16 +81,7 @@ public class FabricationEJB implements IFabricationEJB {
             conn = new UtilDB().GetConn();
             conn.setAutoCommit( false );
 
-            FormuleFabrication[] formuleFabrications = session.getFormulesFabrication();
-            double avgPrPratiqueVolumique = session.getMoyennePrPratiqueVolumique();
-
-            for ( Bloc bloc : session.getBlocs() ) {
-                double volumeBloc = bloc.getVolume(),
-                        prPratique = avgPrPratiqueVolumique * volumeBloc,
-                        prTheorique = getPrTheoriqueVolumique( bloc.getDaty_entree(), formuleFabrications, volumeBloc, conn );
-
-                bloc.updatePrixRevient( prTheorique, prPratique, conn );
-            }
+            optim( session, conn );
 
             conn.commit();
             conn.close();
