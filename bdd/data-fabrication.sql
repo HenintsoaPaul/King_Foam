@@ -1,11 +1,11 @@
 INSERT INTO MACHINE (id, VAL)
-VALUES ('M001', 'Machine1');
+VALUES ('1', 'Machine1');
 INSERT INTO MACHINE (id, VAL)
-VALUES ('M002', 'Machine2');
+VALUES ('2', 'Machine2');
 INSERT INTO MACHINE (id, VAL)
-VALUES ('M003', 'Machine3');
+VALUES ('3', 'Machine3');
 INSERT INTO MACHINE (id, VAL)
-VALUES ('M004', 'Machine4');
+VALUES ('4', 'Machine4');
 
 INSERT INTO unite (id, val, symbole)
 VALUES ('U001', 'Litre', 'l');
