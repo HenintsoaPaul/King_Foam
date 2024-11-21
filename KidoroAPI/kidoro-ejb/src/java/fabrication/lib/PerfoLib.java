@@ -7,7 +7,7 @@ public class PerfoLib extends ClassMAPTable {
     String id_machine;
     double vol_total;
     double sum_pr_pratique, sum_pr_theorique;
-    double diff_th_reel, performance;
+    double diff_th_reel;
 
     // Constr
     public PerfoLib() {
@@ -53,14 +53,6 @@ public class PerfoLib extends ClassMAPTable {
 
     public void setDiff_th_reel( double diff_th_reel ) {
         this.diff_th_reel = diff_th_reel;
-    }
-
-    public double getPerformance() {
-        return performance;
-    }
-
-    public void setPerformance( double performance ) {
-        this.performance = performance;
     }
 
     // Overrides

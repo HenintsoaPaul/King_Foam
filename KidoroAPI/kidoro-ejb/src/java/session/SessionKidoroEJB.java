@@ -2,6 +2,7 @@ package session;
 
 import bean.CGenUtil;
 import cube.bloc.Bloc;
+import fabrication.AchatConsommable;
 import fabrication.FormuleFabrication;
 import fabrication.IFormuleFabricationEJB;
 import fabrication.machine.IMachineEJB;
@@ -15,9 +16,12 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import java.io.Serializable;
+import java.sql.Date;
+import java.util.Arrays;
+import java.util.Comparator;
 
 @Stateful
-@AccessTimeout( 10000L )
+@AccessTimeout( 100000000000L )
 @TransactionAttribute( TransactionAttributeType.SUPPORTS )
 public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
 
@@ -26,6 +30,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
     PrPratiqueLib prPratiqueLib;
     double moyennePrPratiqueVolumique = -1;
     Bloc[] blocs;
+    AchatConsommable[] achatConsommables;
 
     // Getters n Setters
     @Override
@@ -94,6 +99,30 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
             this.setBlocs();
         }
         return this.blocs;
+    }
+
+    @Override
+    public AchatConsommable[] getAchatConsommables()
+            throws Exception {
+        if ( this.achatConsommables == null ) {
+            this.setAchatConsommables();
+        }
+        return this.achatConsommables;
+    }
+
+    @Override
+    public AchatConsommable[] getAchatConsommablesBeforeDaty( AchatConsommable[] achats, Date daty, String idConsommable ) {
+        return Arrays.stream( achats )
+                .filter( achat -> achat.getDaty().compareTo( daty ) <= 0
+                        && achat.getReste() > 0
+                        && achat.getId_consommable().equals( idConsommable ) )
+                .sorted( Comparator.comparing( AchatConsommable::getDaty ) ).toArray( AchatConsommable[]::new );
+    }
+
+    private void setAchatConsommables()
+            throws Exception {
+        AchatConsommable[] arr = ( AchatConsommable[] ) CGenUtil.rechercher( new AchatConsommable(), null, null, "" );
+        this.achatConsommables = arr;
     }
 
     public void setBlocs()

@@ -16,7 +16,7 @@ public class FormuleFabrication extends ClassMAPTable implements Serializable {
         this.setNomTable( "formule_fabrication" );
     }
 
-    public double getCoutFabrication( AchatConsommable[] achats, double volumeBloc, Connection conn )
+    public double getCoutFabricationOptimized( AchatConsommable[] achats, double volumeBloc )
             throws Exception {
         double coutFabrication = 0;
         double qteBesoin = this.getQte() * volumeBloc;
@@ -24,8 +24,7 @@ public class FormuleFabrication extends ClassMAPTable implements Serializable {
             if ( i == achats.length ) {
                 throw new Exception( "Achats en stock insuffisants. Qte reste: " + qteBesoin );
             }
-            AchatConsommable achat = achats[ i ];
-            double qteMiala, qteReste, qteDispo = achat.getReste();
+            double qteMiala, qteReste, qteDispo = achats[i].getReste();
             if ( qteBesoin >= qteDispo ) {
                 qteMiala = qteDispo;
                 qteReste = 0;
@@ -35,10 +34,9 @@ public class FormuleFabrication extends ClassMAPTable implements Serializable {
             }
             // Utilisation du miala
             qteBesoin -= qteMiala;
-            coutFabrication += qteMiala * achat.getPu();
+            coutFabrication += qteMiala * achats[i].getPu();
             // Update reste en stock
-            achat.setReste( qteReste );
-            achat.updateToTable( conn );
+            achats[i].setReste( qteReste );
         }
         return coutFabrication;
     }
