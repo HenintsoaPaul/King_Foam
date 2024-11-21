@@ -40,6 +40,14 @@ public class Bloc extends Cube implements Serializable {
         this.setPrix_revient_pratique( prPratique );
     }
 
+    public int updatePrixRevient( double prTheorique, double prPratique, Connection conn )
+            throws Exception {
+        this.setPrix_revient_theorique( prTheorique );
+        this.setPrix_revient_pratique( prPratique );
+
+        return this.updateToTable( conn );
+    }
+
     public static Bloc creerBlocFilleFromMyTransfo( MyTransfo myTransfo, double prixRevientVolumique )
             throws ParseException {
         Bloc bFille = new Bloc();

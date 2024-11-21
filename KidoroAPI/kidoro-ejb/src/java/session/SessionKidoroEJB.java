@@ -1,6 +1,7 @@
 package session;
 
 import bean.CGenUtil;
+import cube.bloc.Bloc;
 import fabrication.FormuleFabrication;
 import fabrication.IFormuleFabricationEJB;
 import fabrication.machine.IMachineEJB;
@@ -24,6 +25,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
     Machine[] machines;
     PrPratiqueLib prPratiqueLib;
     double moyennePrPratiqueVolumique = -1;
+    Bloc[] blocs;
 
     // Getters n Setters
     @Override
@@ -83,6 +85,21 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
             this.setMoyennePrPratiqueVolumique( pr.getPr_pratique_volumique() );
         }
         return moyennePrPratiqueVolumique;
+    }
+
+    @Override
+    public Bloc[] getBlocs()
+            throws Exception {
+        if ( blocs == null ) {
+            this.setBlocs();
+        }
+        return this.blocs;
+    }
+
+    public void setBlocs()
+            throws Exception {
+        String apresWhere = " order by daty_entree";
+        this.blocs = ( Bloc[] ) CGenUtil.rechercher( new Bloc(), null, null, apresWhere );
     }
 
     private void setMoyennePrPratiqueVolumique( double v ) {

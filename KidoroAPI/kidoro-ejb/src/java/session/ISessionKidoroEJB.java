@@ -1,5 +1,6 @@
 package session;
 
+import cube.bloc.Bloc;
 import fabrication.FormuleFabrication;
 import fabrication.machine.Machine;
 import fabrication.lib.PrPratiqueLib;
@@ -19,5 +20,8 @@ public interface ISessionKidoroEJB {
             throws Exception;
 
     double getMoyennePrPratiqueVolumique()
+            throws Exception;
+
+    Bloc[] getBlocs()
             throws Exception;
 }

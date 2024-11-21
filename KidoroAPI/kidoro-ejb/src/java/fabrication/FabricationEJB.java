@@ -92,4 +92,34 @@ public class FabricationEJB implements IFabricationEJB {
             if ( conn != null ) conn.close();
         }
     }
+
+    @Override
+    public void doUpdateFabrications( ISessionKidoroEJB session )
+            throws Exception {
+        Connection conn = null;
+        try {
+            conn = new UtilDB().GetConn();
+            conn.setAutoCommit( false );
+
+            FormuleFabrication[] formuleFabrications = session.getFormulesFabrication();
+            double avgPrPratiqueVolumique = session.getMoyennePrPratiqueVolumique();
+
+            for ( Bloc bloc : session.getBlocs() ) {
+                double volumeBloc = bloc.getVolume(),
+                        prPratique = avgPrPratiqueVolumique * volumeBloc,
+                        prTheorique = getPrTheoriqueVolumique( bloc.getDaty_entree(), formuleFabrications, volumeBloc, conn );
+
+                bloc.updatePrixRevient( prTheorique, prPratique, conn );
+            }
+
+            conn.commit();
+            conn.close();
+        } catch ( Exception e ) {
+            if ( conn != null ) conn.rollback();
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if ( conn != null ) conn.close();
+        }
+    }
 }
