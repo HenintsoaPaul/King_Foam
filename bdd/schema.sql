@@ -481,11 +481,10 @@ from bloc b;
 CREATE OR REPLACE VIEW perfo_lib AS
 select ID_MACHINE,
        sum(LONGUEUR * LARGEUR * HAUTEUR)                                                                as vol_total,
-       sum(PRIX_REVIENT_PRATIQUE)                                                                       as sum_pr_pratique,
        sum(PRIX_REVIENT_THEORIQUE)                                                                      as sum_pr_theorique,
-       sum(PRIX_REVIENT_THEORIQUE) - sum(PRIX_REVIENT_PRATIQUE)                                         as diff_th_reel,
-       ((sum(PRIX_REVIENT_THEORIQUE) - sum(PRIX_REVIENT_PRATIQUE)) / sum(PRIX_REVIENT_THEORIQUE)) * 100 as performance
+       sum(PRIX_REVIENT_PRATIQUE)                                                                       as sum_pr_pratique,
+       sum(PRIX_REVIENT_THEORIQUE) - sum(PRIX_REVIENT_PRATIQUE)                                         as diff_th_reel
 from bloc b
 where b.ID_MACHINE is not null
 group by ID_MACHINE
-order by performance desc;
+order by diff_th_reel desc;

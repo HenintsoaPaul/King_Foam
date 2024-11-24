@@ -1,0 +1,164 @@
+[
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-12-31",
+    "day": "Sunday",
+    "name": "New Year's Eve",
+    "type": "OBSERVANCE"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-06-29",
+    "day": "Thursday",
+    "name": "Eid al-Adha",
+    "type": "OBSERVANCE"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-03-21",
+    "day": "Tuesday",
+    "name": "March Equinox",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-06-21",
+    "day": "Wednesday",
+    "name": "June Solstice",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-08-15",
+    "day": "Tuesday",
+    "name": "Assumption of Mary",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-04-10",
+    "day": "Monday",
+    "name": "Easter Monday",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-06-26",
+    "day": "Monday",
+    "name": "Independence Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-01-01",
+    "day": "Sunday",
+    "name": "New Year's Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-09-23",
+    "day": "Saturday",
+    "name": "September Equinox",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-12-25",
+    "day": "Monday",
+    "name": "Christmas Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-05-01",
+    "day": "Monday",
+    "name": "Labor Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-11-01",
+    "day": "Wednesday",
+    "name": "All Saints' Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-05-18",
+    "day": "Thursday",
+    "name": "Ascension Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-12-22",
+    "day": "Friday",
+    "name": "December Solstice",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-05-29",
+    "day": "Monday",
+    "name": "Whit Monday",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-03-08",
+    "day": "Wednesday",
+    "name": "International Women's Day",
+    "type": "NATIONAL_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-03-29",
+    "day": "Wednesday",
+    "name": "Martyrs' Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2023,
+    "date": "2023-04-22",
+    "day": "Saturday",
+    "name": "Eid al-Fitr (Tentative Date)",
+    "type": "PUBLIC_HOLIDAY"
+  }
+]
