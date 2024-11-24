@@ -55,7 +55,7 @@ public class TransfoServlet extends HeninServlet {
                             blocMere.getId() : blocMere.getId_bloc_base();
                     blocFille.setId_bloc_base( id_bloc_base );
                     blocFille.setId_bloc_mere( blocMere.getId() );
-                    blocFille.setPrix_revientFromPrv( blocMere.getPrixRevientVolumique() );
+                    blocFille.setPrPratiqueFromVolume( blocMere.getPrixRevientVolumique() );
                     blocFille.insertToTable( conn );
                 }
 

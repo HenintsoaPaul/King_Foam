@@ -1,0 +1,38 @@
+﻿@model IEnumerable<KidoroApp.Models.Perfo>;
+
+@{
+    ViewData["Title"] = "Performance Machines";
+}
+
+<section id="perfo">
+    <h2 class="mb-4">Performance Machines</h2>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Machine</th>
+                <th>Volume Produit</th>
+                <th>PR Theorique (Ar)</th>
+                <th>PR Pratique (Ar)</th>
+                <th>Diff</th>
+                <th>Performance (%)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var perfo in Model)
+            {
+                <tr>
+                    <td>@perfo.id_machine</td>
+                    <td>@(String.Format("{0:N2}", perfo.vol_total))</td>
+                    <td>@(String.Format("{0:N2}", perfo.sum_pr_theorique))</td>
+                    <td>@(String.Format("{0:N2}", perfo.sum_pr_pratique))</td>
+                    <td>@(String.Format("{0:N2}", perfo.diff_th_reel))</td>
+                    <td>@(String.Format("{0:N2}", perfo.GetPerformance()))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+<hr class="my-5" />

@@ -3,8 +3,13 @@ package utils;
 import cube.bloc.IBlocEJB;
 import cube.usuel.IUsuelEJB;
 import etatStock.IStockEJB;
+import fabrication.IAchatConsommableEJB;
+import fabrication.IFormuleFabricationEJB;
+import fabrication.lib.IPerfoLibEJB;
+import fabrication.machine.IMachineEJB;
+import session.ISessionKidoroEJB;
 import teta.ITetaEJB;
-import transformation.ITransfoEJB;
+import fabrication.IFabricationEJB;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -33,11 +38,25 @@ public abstract class EJBGetter {
         return ( ITetaEJB ) ctx.lookup( jndi );
     }
 
-    public static ITransfoEJB getTransfoEJB()
+    public static IFabricationEJB getFabricationEJB()
             throws NamingException {
         Context ctx = new InitialContext();
-        String jndi = "java:global/kidoro/TransfoEJB!transformation.ITransfoEJB";
-        return ( ITransfoEJB ) ctx.lookup( jndi );
+        String jndi = "java:global/kidoro/FabricationEJB!fabrication.IFabricationEJB";
+        return ( IFabricationEJB ) ctx.lookup( jndi );
+    }
+
+    public static IFormuleFabricationEJB getFormuleFabricationEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/FormuleFabricationEJB!fabrication.IFormuleFabricationEJB";
+        return ( IFormuleFabricationEJB ) ctx.lookup( jndi );
+    }
+
+    public static IAchatConsommableEJB getAchatConsommableEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/AchatConsommableEJB!fabrication.IAchatConsommableEJB";
+        return ( IAchatConsommableEJB ) ctx.lookup( jndi );
     }
 
     public static IStockEJB getStockEJB()
@@ -45,5 +64,26 @@ public abstract class EJBGetter {
         Context ctx = new InitialContext();
         String jndi = "java:global/kidoro/StockEJB!etatStock.IStockEJB";
         return ( IStockEJB ) ctx.lookup( jndi );
+    }
+
+    public static ISessionKidoroEJB getSessionKidoroEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/SessionKidoroEJB!session.ISessionKidoroEJB";
+        return ( ISessionKidoroEJB ) ctx.lookup( jndi );
+    }
+
+    public static IMachineEJB getMachineEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/MachineEJB!fabrication.machine.IMachineEJB";
+        return ( IMachineEJB ) ctx.lookup( jndi );
+    }
+
+    public static IPerfoLibEJB getPerfoLibEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/PerfoLibEJB!fabrication.lib.IPerfoLibEJB";
+        return ( IPerfoLibEJB ) ctx.lookup( jndi );
     }
 }
