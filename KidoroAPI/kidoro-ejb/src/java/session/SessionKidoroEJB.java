@@ -9,7 +9,7 @@ import fabrication.machine.IMachineEJB;
 import fabrication.machine.Machine;
 import fabrication.lib.PrPratiqueLib;
 import utils.EJBGetter;
-import utils.RandomUtil;
+import utils.random.RandomIntUtil;
 
 import javax.ejb.AccessTimeout;
 import javax.ejb.Stateful;
@@ -64,7 +64,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
     public Machine getRandomMachine()
             throws Exception {
         Machine[] ms = getMachines();
-        int index = RandomUtil.getRandomNumber( 0, ms.length );
+        int index = RandomIntUtil.getRandInt( 0, ms.length );
         return ms[ index ];
     }
 
