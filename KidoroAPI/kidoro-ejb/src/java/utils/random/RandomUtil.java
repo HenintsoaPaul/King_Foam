@@ -1,9 +1,9 @@
 package utils.random;
 
-import bean.CGenUtil;
 import cube.Cube;
 import cube.bloc.Bloc;
 import holiday.Holiday;
+import session.ISessionKidoroEJB;
 import utils.DateUtil;
 
 import java.sql.Date;
@@ -54,21 +54,29 @@ public abstract class RandomUtil {
         return bloc;
     }
 
+    public Bloc[] getRandomData( int nbBlocsToGenerate, Date startDate, Date endDate, ISessionKidoroEJB session )
+            throws Exception {
+        Bloc[] blocs = new Bloc[ nbBlocsToGenerate ];
+
+        // WARNING: get moyenne pr
+        double moyennePrVolumique = session.getMoyennePrPratiqueVolumique(),
+                marge = 10,
+                moyennePrVolumiqueApresVariation = this.getPrAvecVariation( moyennePrVolumique, marge );
+
+        List<Holiday> holidayList = session.getHolidays();
+        Bloc b;
+        for ( int i = 0; i < nbBlocsToGenerate; i++ ) {
+            b = this.getRandomBloc( startDate, endDate, holidayList );
+            b.setPrix_revient_pratique( moyennePrVolumiqueApresVariation * b.getVolume() );
+            blocs[ i ] = b;
+        }
+
+        return blocs;
+    }
+
     public double getPrAvecVariation( double pRevient, double marge ) {
         double max = pRevient + ( pRevient * ( marge / 100 ) ),
                 min = pRevient - ( pRevient * ( marge / 100 ) );
         return RandomDoubleUtil.getRandDouble( min, max );
-    }
-
-    public double getMoyennePr()
-            throws Exception {
-        String apresWhere = "";
-        Bloc[] blocs = ( Bloc[] ) CGenUtil.rechercher( new Bloc(), null, null, apresWhere );
-        double r = 0, vols = 0;
-        for ( Bloc b:  blocs ) {
-            r += b.getPrixRevientVolumique();
-            vols += b.getVolume();
-        }
-        return r / vols;
     }
 }

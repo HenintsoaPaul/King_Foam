@@ -8,6 +8,7 @@ import fabrication.IFormuleFabricationEJB;
 import fabrication.machine.IMachineEJB;
 import fabrication.machine.Machine;
 import fabrication.lib.PrPratiqueLib;
+import holiday.Holiday;
 import utils.EJBGetter;
 import utils.random.RandomIntUtil;
 
@@ -15,10 +16,13 @@ import javax.ejb.AccessTimeout;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.naming.NamingException;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 @Stateful
 @AccessTimeout( 100000000000L )
@@ -31,6 +35,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
     double moyennePrPratiqueVolumique = -1;
     Bloc[] blocs;
     AchatConsommable[] achatConsommables;
+    List<Holiday> holidays;
 
     // Getters n Setters
     @Override
@@ -87,7 +92,7 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
             throws Exception {
         if ( moyennePrPratiqueVolumique == -1 ) {
             PrPratiqueLib pr = getPrPratiqueLib();
-            this.setMoyennePrPratiqueVolumique( pr.getPr_pratique_volumique() );
+            this.setMoyennePrPratiqueVolumique( pr.getAvg_pr_pratique_volumique() );
         }
         return moyennePrPratiqueVolumique;
     }
@@ -117,6 +122,15 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
                         && achat.getReste() > 0
                         && achat.getId_consommable().equals( idConsommable ) )
                 .sorted( Comparator.comparing( AchatConsommable::getDaty ) ).toArray( AchatConsommable[]::new );
+    }
+
+    @Override
+    public List<Holiday> getHolidays()
+            throws NamingException, FileNotFoundException {
+        if ( holidays == null ) {
+            holidays = EJBGetter.getHolidayEJB().getAll();
+        }
+        return holidays;
     }
 
     private void setAchatConsommables()
