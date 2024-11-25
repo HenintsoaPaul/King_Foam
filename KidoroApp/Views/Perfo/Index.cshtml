@@ -7,6 +7,18 @@
 <section id="perfo">
     <h2 class="mb-4">Performance Machines</h2>
 
+    <form asp-controller="Perfo" asp-action="filter">
+        <select name="annee">
+            <option value="-1">Tous</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+        <button type="submit" class="btn btn-success btn-Transfo" id="btn-submit">
+            Filtrer
+        </button>
+    </form>
+
     <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
