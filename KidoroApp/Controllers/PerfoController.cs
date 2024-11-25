@@ -11,4 +11,9 @@ public class PerfoController(HttpClient httpClient) : Controller
     {
         return View(await _perfoService.GetPerfo());
     }
+
+    public async Task<IActionResult> Filter(string annee)
+    {
+        return View("Index", await _perfoService.GetPerfoByYear(annee));
+    }
 }

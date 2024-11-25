@@ -1,0 +1,164 @@
+[
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-12-21",
+    "day": "Saturday",
+    "name": "December Solstice",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-12-31",
+    "day": "Tuesday",
+    "name": "New Year's Eve",
+    "type": "OBSERVANCE"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-11-01",
+    "day": "Friday",
+    "name": "All Saints' Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-08-15",
+    "day": "Thursday",
+    "name": "Assumption of Mary",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-04-10",
+    "day": "Wednesday",
+    "name": "Eid al-Fitr (Tentative Date)",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-05-09",
+    "day": "Thursday",
+    "name": "Ascension Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-06-20",
+    "day": "Thursday",
+    "name": "June Solstice",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-04-01",
+    "day": "Monday",
+    "name": "Easter Monday",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-03-20",
+    "day": "Wednesday",
+    "name": "March Equinox",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-05-01",
+    "day": "Wednesday",
+    "name": "Labor Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-05-20",
+    "day": "Monday",
+    "name": "Whit Monday",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-12-25",
+    "day": "Wednesday",
+    "name": "Christmas Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-01-01",
+    "day": "Monday",
+    "name": "New Year's Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-09-22",
+    "day": "Sunday",
+    "name": "September Equinox",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-03-29",
+    "day": "Friday",
+    "name": "Martyrs' Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-03-08",
+    "day": "Friday",
+    "name": "International Women's Day",
+    "type": "NATIONAL_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-06-26",
+    "day": "Wednesday",
+    "name": "Independence Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2024,
+    "date": "2024-06-17",
+    "day": "Monday",
+    "name": "Eid al-Adha",
+    "type": "OBSERVANCE"
+  }
+]

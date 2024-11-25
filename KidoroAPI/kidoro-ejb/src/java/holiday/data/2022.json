@@ -1,0 +1,164 @@
+[
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-07-10",
+    "day": "Sunday",
+    "name": "Eid al-Adha",
+    "type": "OBSERVANCE"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-12-31",
+    "day": "Saturday",
+    "name": "New Year's Eve",
+    "type": "OBSERVANCE"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-05-26",
+    "day": "Thursday",
+    "name": "Ascension Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-06-26",
+    "day": "Sunday",
+    "name": "Independence Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-03-20",
+    "day": "Sunday",
+    "name": "March Equinox",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-08-15",
+    "day": "Monday",
+    "name": "Assumption of Mary",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-06-21",
+    "day": "Tuesday",
+    "name": "June Solstice",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-01-01",
+    "day": "Saturday",
+    "name": "New Year's Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-09-23",
+    "day": "Friday",
+    "name": "September Equinox",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-12-25",
+    "day": "Sunday",
+    "name": "Christmas Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-05-01",
+    "day": "Sunday",
+    "name": "Labor Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-06-06",
+    "day": "Monday",
+    "name": "Whit Monday",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-04-18",
+    "day": "Monday",
+    "name": "Easter Monday",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-12-22",
+    "day": "Thursday",
+    "name": "December Solstice",
+    "type": "SEASON"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-11-01",
+    "day": "Tuesday",
+    "name": "All Saints' Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-03-29",
+    "day": "Tuesday",
+    "name": "Martyrs' Day",
+    "type": "PUBLIC_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-03-08",
+    "day": "Tuesday",
+    "name": "International Women's Day",
+    "type": "NATIONAL_HOLIDAY"
+  },
+  {
+    "country": "Madagascar",
+    "iso": "MG",
+    "year": 2022,
+    "date": "2022-05-03",
+    "day": "Tuesday",
+    "name": "Eid al-Fitr (Tentative Date)",
+    "type": "PUBLIC_HOLIDAY"
+  }
+]

@@ -37,6 +37,8 @@ public class CSVUtil<T> {
             throws SQLException {
         int total = 0;
         Connection conn = null;
+        long startTime = System.nanoTime(), endTime;
+
         try ( CSVReader reader = new CSVReaderBuilder( new FileReader( filePath ) )
                 .withSkipLines( 1 ) // Skip header row
                 .build() ) {
@@ -48,21 +50,17 @@ public class CSVUtil<T> {
             PreparedStatement pstmt = conn.prepareStatement( sqlInsert );
 
             String[] nextLine;
-            int batchSize = 20000;
+            int batchSize = 10000;
             int anatyBatch = 0;
 
             Bloc b = new Bloc();
-
             while ( ( nextLine = reader.readNext() ) != null ) {
                 String dt = DateUtil.formatDate( nextLine[ 0 ] );
                 pstmt.setDate( 1, DateUtil.strToDate( dt ) );      // daty_entree
-
                 pstmt.setDouble( 2, Double.parseDouble( nextLine[ 1 ] ) );   // longueur
                 pstmt.setDouble( 3, Double.parseDouble( nextLine[ 2 ] ) );   // largeur
                 pstmt.setDouble( 4, Double.parseDouble( nextLine[ 3 ] ) );   // hauteur
-
                 pstmt.setDouble( 5, Double.parseDouble( nextLine[ 4 ] ) );   // prPratique
-
                 pstmt.setString( 6, nextLine[ 5 ] );   // id_machine
 
                 b.construirePK( conn );
@@ -73,7 +71,7 @@ public class CSVUtil<T> {
 
                 if ( anatyBatch >= batchSize ) {
                     total += batchSize;
-                    System.out.println( "nanao insert " + anatyBatch + " | total = " + total );
+                    System.out.println( "=> " + total );
                     pstmt.executeBatch();
                     pstmt.clearBatch();
                     anatyBatch = 0;
@@ -81,7 +79,7 @@ public class CSVUtil<T> {
             }
             if ( anatyBatch > 0 ) {
                 total += anatyBatch;
-                System.out.println( "nanao insert " + anatyBatch + " | total = " + total );
+                System.out.println( "=> " + total );
                 pstmt.executeBatch();
                 pstmt.clearBatch();
             }
@@ -91,6 +89,8 @@ public class CSVUtil<T> {
             throw new RuntimeException( "Error reading CSV file", e );
         } finally {
             if ( conn != null ) conn.close();
+            endTime = System.nanoTime();
+            System.out.println( "Duree d'execution : " + ( endTime - startTime ) / 1000000 + " ms" );
         }
     }
 }

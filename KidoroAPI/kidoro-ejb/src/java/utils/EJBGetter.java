@@ -7,6 +7,7 @@ import fabrication.IAchatConsommableEJB;
 import fabrication.IFormuleFabricationEJB;
 import fabrication.lib.IPerfoLibEJB;
 import fabrication.machine.IMachineEJB;
+import holiday.IHolidayEJB;
 import session.ISessionKidoroEJB;
 import teta.ITetaEJB;
 import fabrication.IFabricationEJB;
@@ -85,5 +86,12 @@ public abstract class EJBGetter {
         Context ctx = new InitialContext();
         String jndi = "java:global/kidoro/PerfoLibEJB!fabrication.lib.IPerfoLibEJB";
         return ( IPerfoLibEJB ) ctx.lookup( jndi );
+    }
+
+    public static IHolidayEJB getHolidayEJB()
+            throws NamingException {
+        Context ctx = new InitialContext();
+        String jndi = "java:global/kidoro/HolidayEJB!holiday.IHolidayEJB";
+        return ( IHolidayEJB ) ctx.lookup( jndi );
     }
 }

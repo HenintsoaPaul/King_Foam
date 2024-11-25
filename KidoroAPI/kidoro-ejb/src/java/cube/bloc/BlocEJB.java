@@ -5,6 +5,7 @@ import utilitaire.UtilDB;
 
 import javax.ejb.Stateless;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 @Stateless
 public class BlocEJB implements IBlocEJB {
@@ -24,6 +25,58 @@ public class BlocEJB implements IBlocEJB {
         } catch ( Exception e ) {
             if ( conn != null ) conn.rollback();
             e.printStackTrace();
+            throw e;
+        } finally {
+            if ( conn != null ) conn.close();
+        }
+    }
+
+    @Override
+    public Bloc[] saveAllByQuery( Bloc[] blocs )
+            throws Exception {
+        int total = 0;
+        Connection conn = null;
+        try {
+            conn = new UtilDB().GetConn();
+            conn.setAutoCommit( false );
+
+            String sqlInsert = "INSERT INTO bloc (daty_entree, longueur, largeur, hauteur, PRIX_REVIENT_PRATIQUE, id_machine, id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement( sqlInsert );
+
+            int batchSize = 50000, anatyBatch = 0;
+            for ( Bloc b : blocs ) {
+                pstmt.setDate( 1, b.getDaty_entree() );
+                pstmt.setDouble( 2, b.getLongueur() );
+                pstmt.setDouble( 3, b.getLargeur() );
+                pstmt.setDouble( 4, b.getHauteur() );
+                pstmt.setDouble( 5, b.getPrix_revient_pratique() );
+                pstmt.setString( 6, b.getId_machine() );
+
+                b.construirePK( conn );
+                pstmt.setString( 7, b.getId() );
+
+                pstmt.addBatch();
+                anatyBatch++;
+
+                if ( anatyBatch >= batchSize ) {
+                    total += batchSize;
+                    System.out.println( "nanao insert " + anatyBatch + " | total = " + total );
+                    pstmt.executeBatch();
+                    pstmt.clearBatch();
+                    anatyBatch = 0;
+                }
+            }
+
+            if ( anatyBatch > 0 ) {
+                total += anatyBatch;
+                System.out.println( "nanao insert " + anatyBatch + " | total = " + total );
+                pstmt.executeBatch();
+                pstmt.clearBatch();
+            }
+            conn.commit();
+            return blocs;
+        } catch ( Exception e ) {
+            if ( conn != null ) conn.rollback();
             throw e;
         } finally {
             if ( conn != null ) conn.close();

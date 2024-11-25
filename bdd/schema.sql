@@ -261,11 +261,11 @@ CREATE TABLE bloc
     id                     VARCHAR2(50),
     daty_entree            DATE          NOT NULL,
     daty_sortie            DATE,
-    prix_revient_theorique NUMBER(15, 5) DEFAULT 0,
-    prix_revient_pratique  NUMBER(15, 5) DEFAULT 0,
-    longueur               NUMBER(15, 5) NOT NULL,
-    largeur                NUMBER(15, 5) NOT NULL,
-    hauteur                NUMBER(15, 5) NOT NULL,
+    prix_revient_theorique FLOAT DEFAULT 0,
+    prix_revient_pratique  FLOAT DEFAULT 0,
+    longueur               FLOAT NOT NULL,
+    largeur                FLOAT NOT NULL,
+    hauteur                FLOAT NOT NULL,
     id_bloc_mere           VARCHAR2(50),
     id_machine             VARCHAR2(50),
     PRIMARY KEY (id),
@@ -481,11 +481,10 @@ from bloc b;
 CREATE OR REPLACE VIEW perfo_lib AS
 select ID_MACHINE,
        sum(LONGUEUR * LARGEUR * HAUTEUR)                                                                as vol_total,
-       sum(PRIX_REVIENT_PRATIQUE)                                                                       as sum_pr_pratique,
        sum(PRIX_REVIENT_THEORIQUE)                                                                      as sum_pr_theorique,
-       sum(PRIX_REVIENT_THEORIQUE) - sum(PRIX_REVIENT_PRATIQUE)                                         as diff_th_reel,
-       ((sum(PRIX_REVIENT_THEORIQUE) - sum(PRIX_REVIENT_PRATIQUE)) / sum(PRIX_REVIENT_THEORIQUE)) * 100 as performance
+       sum(PRIX_REVIENT_PRATIQUE)                                                                       as sum_pr_pratique,
+       sum(PRIX_REVIENT_THEORIQUE) - sum(PRIX_REVIENT_PRATIQUE)                                         as diff_th_reel
 from bloc b
 where b.ID_MACHINE is not null
 group by ID_MACHINE
-order by performance desc;
+order by diff_th_reel desc;

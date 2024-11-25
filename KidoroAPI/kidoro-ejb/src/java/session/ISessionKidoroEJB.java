@@ -5,9 +5,13 @@ import fabrication.AchatConsommable;
 import fabrication.FormuleFabrication;
 import fabrication.machine.Machine;
 import fabrication.lib.PrPratiqueLib;
+import holiday.Holiday;
 
 import javax.ejb.Remote;
+import javax.naming.NamingException;
+import java.io.FileNotFoundException;
 import java.sql.Date;
+import java.util.List;
 
 @Remote
 public interface ISessionKidoroEJB {
@@ -27,9 +31,14 @@ public interface ISessionKidoroEJB {
     Bloc[] getBlocs()
             throws Exception;
 
+    void setBlocsFrom( Bloc[] blocs );
+
     AchatConsommable[] getAchatConsommables()
             throws Exception;
 
     AchatConsommable[] getAchatConsommablesBeforeDaty( AchatConsommable[] achats, Date daty, String idConsommable )
             throws Exception;
+
+    List<Holiday> getHolidays()
+            throws NamingException, FileNotFoundException;
 }

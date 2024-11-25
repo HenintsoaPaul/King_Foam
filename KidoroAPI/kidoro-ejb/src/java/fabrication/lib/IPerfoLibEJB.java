@@ -7,4 +7,7 @@ public interface IPerfoLibEJB {
 
     PerfoLib[] getAll()
             throws Exception;
+
+    PerfoLib[] getByYear( String year )
+            throws Exception;
 }

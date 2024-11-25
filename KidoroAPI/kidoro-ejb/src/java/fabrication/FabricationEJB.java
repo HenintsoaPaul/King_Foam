@@ -26,8 +26,8 @@ public class FabricationEJB implements IFabricationEJB {
                 }
                 prPratique += ffConsommable.getCoutFabricationOptimized( achats, volumeBloc );
 
-                for ( AchatConsommable vao: achats ) {
-                    for ( AchatConsommable taloha: sessionAchats ) {
+                for ( AchatConsommable vao : achats ) {
+                    for ( AchatConsommable taloha : sessionAchats ) {
                         if ( taloha.getId().equals( vao.getId() ) ) {
                             taloha.setReste( vao.getReste() );
                         }
@@ -56,7 +56,7 @@ public class FabricationEJB implements IFabricationEJB {
         PreparedStatement pstmt = conn.prepareStatement( "UPDATE bloc SET prix_revient_theorique = ? WHERE id = ?" );
         FormuleFabrication[] formuleFabrications = session.getFormulesFabrication();
         AchatConsommable[] sessionAchats = session.getAchatConsommables();
-        int batchSize = 20000, anatyBatch = 0;
+        int batchSize = 10000, anatyBatch = 0;
 
         for ( Bloc bloc : session.getBlocs() ) {
             double prTheorique = getPrTheoriqueVolumiqueOptimized( bloc.getDaty_entree(), formuleFabrications, sessionAchats, bloc.getVolume() );
@@ -87,6 +87,7 @@ public class FabricationEJB implements IFabricationEJB {
     public void doUpdateFabrications( ISessionKidoroEJB session )
             throws Exception {
         Connection conn = null;
+        long starTime = System.nanoTime(), duree;
         try {
             conn = new UtilDB().GetConn();
             conn.setAutoCommit( false );
@@ -101,6 +102,8 @@ public class FabricationEJB implements IFabricationEJB {
             throw e;
         } finally {
             if ( conn != null ) conn.close();
+            duree = System.nanoTime() - starTime;
+            System.out.println( "Duree d'execution: " + ( duree / 1000000 ) + " ms" );
         }
     }
 }

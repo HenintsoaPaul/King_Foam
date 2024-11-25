@@ -25,4 +25,13 @@ public class PerfoService(HttpClient httpClient)
     };
         return Task.FromResult(mockData);
     }
+
+    internal async Task<List<Perfo>> GetPerfoByYear(string year)
+    {
+        var requestUri = $"{BaseUrl}/perfo?year={year}";
+        var response = await httpClient.GetAsync(requestUri);
+        if (!response.IsSuccessStatusCode) return [];
+        var result = await response.Content.ReadFromJsonAsync<List<Perfo>>();
+        return result ?? [];
+    }
 }
