@@ -32,7 +32,7 @@ public class BlocEJB implements IBlocEJB {
     }
 
     @Override
-    public void saveAllByQuery( Bloc[] blocs )
+    public Bloc[] saveAllByQuery( Bloc[] blocs )
             throws Exception {
         int total = 0;
         Connection conn = null;
@@ -74,6 +74,7 @@ public class BlocEJB implements IBlocEJB {
                 pstmt.clearBatch();
             }
             conn.commit();
+            return blocs;
         } catch ( Exception e ) {
             if ( conn != null ) conn.rollback();
             throw e;

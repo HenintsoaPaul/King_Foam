@@ -1,5 +1,6 @@
 import cube.bloc.Bloc;
 import cube.bloc.IBlocEJB;
+import fabrication.IFabricationEJB;
 import session.ISessionKidoroEJB;
 import utils.EJBGetter;
 import utils.random.RandomIntUtil;
@@ -27,13 +28,17 @@ public class RandomServlet extends HeninServlet {
 
             ISessionKidoroEJB session = EJBGetter.getSessionKidoroEJB();
 
-            int nbBlocs = 10;
+            int nbBlocs = 2;
             Bloc[] blocs = randomIntUtil.getRandomData( nbBlocs, startDate, endDate, session );
             System.out.println( "Azo ny blocs rehetra" );
 
             IBlocEJB blocEJB = EJBGetter.getBlocEJB();
-            blocEJB.saveAllByQuery( blocs );
+            blocs = blocEJB.saveAllByQuery( blocs );
             System.out.println( "Vita ny insert" );
+
+            session.setBlocsFrom( blocs );
+            IFabricationEJB fabricationEJB = EJBGetter.getFabricationEJB();
+            fabricationEJB.doUpdateFabrications( session );
 
             resp.getWriter().println( gson.toJson( blocs ) );
         } catch ( Exception e ) {

@@ -31,6 +31,8 @@ public interface ISessionKidoroEJB {
     Bloc[] getBlocs()
             throws Exception;
 
+    void setBlocsFrom( Bloc[] blocs );
+
     AchatConsommable[] getAchatConsommables()
             throws Exception;
 

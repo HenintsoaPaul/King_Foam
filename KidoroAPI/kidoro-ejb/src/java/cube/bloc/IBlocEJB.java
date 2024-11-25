@@ -8,7 +8,7 @@ public interface IBlocEJB {
     int add( Bloc bloc )
             throws Exception;
 
-    void saveAllByQuery( Bloc[] blocs )
+    Bloc[] saveAllByQuery( Bloc[] blocs )
             throws Exception;
 
     int updatePrixRevient( Bloc bloc, double newPrix )

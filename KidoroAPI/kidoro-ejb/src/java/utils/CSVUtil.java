@@ -48,7 +48,7 @@ public class CSVUtil<T> {
             PreparedStatement pstmt = conn.prepareStatement( sqlInsert );
 
             String[] nextLine;
-            int batchSize = 20000;
+            int batchSize = 50000;
             int anatyBatch = 0;
 
             Bloc b = new Bloc();

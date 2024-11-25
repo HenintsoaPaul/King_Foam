@@ -107,6 +107,11 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
     }
 
     @Override
+    public void setBlocsFrom( Bloc[] blocs ) {
+        this.blocs = blocs;
+    }
+
+    @Override
     public AchatConsommable[] getAchatConsommables()
             throws Exception {
         if ( this.achatConsommables == null ) {
