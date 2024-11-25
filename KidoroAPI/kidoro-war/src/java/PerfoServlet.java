@@ -18,9 +18,17 @@ public class PerfoServlet extends HeninServlet {
         try {
             resp.setContentType( "application/json" );
             super.setCORS( resp );
-
             IPerfoLibEJB ejb = EJBGetter.getPerfoLibEJB();
-            resp.getWriter().println( gson.toJson( ejb.getAll() ) );
+
+            Object[] arr;
+            String year = req.getParameter( "year" );
+            if ( year == null || year.equals( "tous" ) ) {
+                arr = ejb.getAll();
+            } else {
+                arr = ejb.getByYear( year );
+            }
+
+            resp.getWriter().println( gson.toJson( arr ) );
         } catch ( Exception e ) {
             e.printStackTrace();
             resp.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );

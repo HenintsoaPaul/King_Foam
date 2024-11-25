@@ -9,6 +9,7 @@ import fabrication.machine.IMachineEJB;
 import fabrication.machine.Machine;
 import fabrication.lib.PrPratiqueLib;
 import holiday.Holiday;
+import utilitaire.UtilDB;
 import utils.EJBGetter;
 import utils.random.RandomIntUtil;
 
@@ -19,7 +20,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.naming.NamingException;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -77,10 +78,39 @@ public class SessionKidoroEJB implements ISessionKidoroEJB, Serializable {
     public PrPratiqueLib getPrPratiqueLib()
             throws Exception {
         if ( prPratiqueLib == null ) {
-            PrPratiqueLib pr = ( PrPratiqueLib ) CGenUtil.rechercher( new PrPratiqueLib(), null, null, "" )[ 0 ];
+//            PrPratiqueLib pr = ( PrPratiqueLib ) CGenUtil.rechercher( new PrPratiqueLib(), null, null, "" )[ 0 ];
+            PrPratiqueLib pr = fufu();
             this.setPrPratiqueLib( pr );
         }
         return prPratiqueLib;
+    }
+
+    PrPratiqueLib fufu()
+            throws SQLException {
+        Connection c = null;
+        Statement cmd = null;
+        ResultSet dr = null;
+        PrPratiqueLib res = new PrPratiqueLib();
+        try {
+            c = new UtilDB().GetConn();
+            String query = "select * from PR_PRATIQUE_LIB";
+            cmd = c.createStatement( 1004, 1008 );
+            dr = cmd.executeQuery( query );
+            while ( dr.next() ) {
+                res.setSum_pr_pratique( dr.getDouble( "sum_pr_pratique" ) );
+                res.setSum_volume( dr.getDouble( "sum_volume" ) );
+                res.setPr_pratique_volumique( dr.getDouble( "pr_pratique_volumique" ) );
+                res.setAvg_pr_pratique_volumique( dr.getDouble( "avg_pr_pratique_volumique" ) );
+            }
+            return res;
+        } catch ( Exception x ) {
+            x.printStackTrace();
+            throw x;
+        } finally {
+            if ( dr != null ) dr.close();
+            if ( cmd != null ) cmd.close();
+            if ( c != null ) c.close();
+        }
     }
 
     private void setPrPratiqueLib( PrPratiqueLib prPratiqueLib ) {
